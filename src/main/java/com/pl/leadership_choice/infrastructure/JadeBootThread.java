@@ -14,7 +14,8 @@ public class JadeBootThread extends Thread {
 
     //add the <agent-local-name>:<fully-qualified-agent-class> name here;
     // you can add more than one by semicolon separated values.
-    private final String ACTOR_NAMES_args = "leadershipChoiceAgent1:com.pl.leadership_choice.proof_of_concept.LeadershipChoiceAgent";
+    private final String ACTOR_NAMES_args = "leadershipChoiceAgent1:com.pl.leadership_choice.proof_of_concept.LeadershipChoiceAgent" +
+            "(sampleConfiguration.json)";
 
     private final String GUI_args = "-gui";
 
