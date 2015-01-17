@@ -25,14 +25,15 @@
 package com.pl.leadership_choice.proof_of_concept;
 
 import jade.core.Agent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LeadershipChoiceAgent extends Agent {
+    Logger logger = LoggerFactory.getLogger(LeadershipChoiceAgent.class);
 
     protected void setup() {
+        logger.info(getAID().getName() + ": Agent has started.");
         Object[] args = getArguments();
-
-        System.out.println("working");
-
         doDelete();
     }
 }
