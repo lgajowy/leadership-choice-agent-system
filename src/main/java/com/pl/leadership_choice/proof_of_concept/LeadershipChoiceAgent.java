@@ -24,17 +24,39 @@
  */
 package com.pl.leadership_choice.proof_of_concept;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pl.leadership_choice.core.AgentConfiguration;
 import jade.core.Agent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.IOException;
+
 public class LeadershipChoiceAgent extends Agent {
     Logger logger = LoggerFactory.getLogger(LeadershipChoiceAgent.class);
 
+    AgentConfiguration configInfo;
+
     protected void setup() {
         logger.info(getAID().getName() + ": Agent has started.");
+
         Object[] args = getArguments();
+        getAgentConfigFromComandLineArgs(args[0]);
+
+        configInfo.getGroupId();
+
         doDelete();
+    }
+
+    private void getAgentConfigFromComandLineArgs(Object arg) {
+        try {
+            configInfo = new ObjectMapper().readValue(new File((String) arg), AgentConfiguration.class);
+        } catch (IOException e) {
+            logger.error(getAID().getName() + ": Couldn't parse configuration file. Terminating.");
+            e.printStackTrace();
+            doDelete();     //FIXME: terminate agent properly!!!!!
+        }
     }
 }
 
