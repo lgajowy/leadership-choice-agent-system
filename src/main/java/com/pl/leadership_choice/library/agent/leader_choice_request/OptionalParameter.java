@@ -1,9 +1,9 @@
-package com.pl.leadership_choice.library;
+package com.pl.leadership_choice.library.agent.leader_choice_request;
 
 /**
  * Created by lukasz on 17.01.15.
  */
-public class OptionalFeature {
+public class OptionalParameter {
 
     private Integer value;
 

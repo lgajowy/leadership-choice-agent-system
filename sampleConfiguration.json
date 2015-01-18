@@ -1,13 +1,8 @@
 {
     "groupId": "10",
-    "mandatoryFeatures": {
-        "weight": ">30",
-        "height": "<20"
-    },
-    "optionalFeatures": {
-        "fancyGlasses": {
-            "value": 10,
-            "weight": 11
-        }
-    }
+    "feature": "10",
+    "groupId": "10",
+    "groupId": "10",
+    "groupId": "10",
+    "groupId": "10"
 }
