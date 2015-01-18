@@ -25,7 +25,7 @@
 package com.pl.leadership_choice.proof_of_concept;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pl.leadership_choice.core.AgentConfiguration;
+import com.pl.leadership_choice.library.AgentConfiguration;
 import jade.core.Agent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

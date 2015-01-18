@@ -1,4 +1,4 @@
-package com.pl.leadership_choice.core;
+package com.pl.leadership_choice.library;
 
 /**
  * Created by lukasz on 17.01.15.

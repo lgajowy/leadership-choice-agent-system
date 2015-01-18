@@ -1,4 +1,4 @@
-package com.pl.leadership_choice.core;
+package com.pl.leadership_choice.library;
 
 import java.util.Map;
 

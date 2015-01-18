@@ -1,4 +1,4 @@
-package com.pl.leadership_choice.infrastructure;
+package com.pl.leadership_choice.proof_of_concept.infrastructure;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

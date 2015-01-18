@@ -1,7 +1,7 @@
 package com.pl.leadership_choice.proof_of_concept;
 
 
-import com.pl.leadership_choice.infrastructure.JadeBootThread;
+import com.pl.leadership_choice.proof_of_concept.infrastructure.JadeBootThread;
 
 /**
  * Created by lukasz on 17.01.15.
