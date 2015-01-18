@@ -24,22 +24,51 @@ public class PredispositionCalculator {
     }
 
     public Predisposition calculatePredisposition() {
-        Predisposition predisposition = null;
-
-        for (Map.Entry<String, MandatoryLeaderParameter> entry : mandatoryFeatures.entrySet()) {
-            if (!agentFeatures.containsKey(entry.getKey())) {
-                predisposition = new Predisposition();
-            }
+        if (!areAllDesiredFeaturesPresent()) {
+            return new Predisposition(0D, false);
+        } else if (!areMandatoryParametersMet()) {
+            return new Predisposition(0D, false);
+        } else {
+            return new Predisposition(calculateScore(), true);
         }
-
-        if (areMandatoryParametersMet()) {
-
-        }
-        predisposition = new Predisposition();
-        return predisposition;
     }
 
-    public boolean areMandatoryParametersMet() {
+    private Double calculateScore() {
+        Double counter = 0D;
+        Double denominator = 0D;
+
+        for (Map.Entry<String, MandatoryLeaderParameter> leaderParameter : mandatoryFeatures.entrySet()) {
+            Double actualAgentFeatureValue = agentFeatures.get(leaderParameter.getKey());
+            Double featureWeight = leaderParameter.getValue().getWeight();
+
+            counter += actualAgentFeatureValue * featureWeight;
+            denominator += featureWeight;
+        }
+
+        for (Map.Entry<String, LeaderParameter> leaderParameter : optionalFeatures.entrySet()) {
+            Double actualAgentFeatureValue = agentFeatures.get(leaderParameter.getKey());
+            Double featureWeight = leaderParameter.getValue().getWeight();
+
+            counter += actualAgentFeatureValue * featureWeight;
+            denominator += featureWeight;
+        }
+
+        if (counter == 0D && denominator == 0D) {
+            return 0D;
+        }
+        return counter / denominator;
+    }
+
+    private boolean areAllDesiredFeaturesPresent() {
+        for (Map.Entry<String, MandatoryLeaderParameter> entry : mandatoryFeatures.entrySet()) {
+            if (!agentFeatures.containsKey(entry.getKey())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean areMandatoryParametersMet() {
         for (Map.Entry<String, MandatoryLeaderParameter> leaderParameter : mandatoryFeatures.entrySet()) {
             if (agentFeatures.containsKey(leaderParameter.getKey())) {
                 Double checkedAgentValue = agentFeatures.get(leaderParameter.getKey());
@@ -48,6 +77,8 @@ public class PredispositionCalculator {
                 if (!isParameterMet(checkedAgentValue, checkedLeaderParameter)) {
                     return false;
                 }
+            } else {
+                return false;
             }
         }
         return true;
@@ -79,5 +110,4 @@ public class PredispositionCalculator {
         }
         return false;
     }
-
 }
