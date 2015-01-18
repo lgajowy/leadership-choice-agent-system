@@ -25,11 +25,15 @@
 package com.pl.leadership_choice.proof_of_concept;
 
 import com.pl.leadership_choice.library.agent.configuration.FromJsonFileAgentConfigurer;
+import com.pl.leadership_choice.library.agent.leader_choice_request.LeaderParameter;
+import com.pl.leadership_choice.library.agent.leader_choice_request.MandatoryLeaderParameter;
+import com.pl.leadership_choice.library.behaviours.ReceiveRequestBehaviour;
 import jade.core.Agent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Map;
 
 public class LeadershipChoiceAgent extends Agent {
@@ -37,12 +41,57 @@ public class LeadershipChoiceAgent extends Agent {
 
     private Map agentParameters;
 
+    private String groupId;
+    private ArrayList groupMembers;
+    private Map<String, MandatoryLeaderParameter> mandatoryFeatures;
+    private Map<String, LeaderParameter> optionalFeatures;
+
+    public void setGroupId(String groupId)
+    {
+        this.groupId = groupId;
+    }
+    public void setGroupMembers(ArrayList groupMembers)
+    {
+        this.groupMembers = groupMembers;
+    }
+    public void setMandatoryFeatures(Map<String, MandatoryLeaderParameter> mandatoryFeatures)
+    {
+        this.mandatoryFeatures = mandatoryFeatures;
+    }
+    public void setOptionalFeatures(Map<String, LeaderParameter> optionalFeatures)
+    {
+        this.optionalFeatures = optionalFeatures;
+    }
+    public String getGroupId()
+    {
+        return this.groupId;
+    }
+    public ArrayList getGroupMembers()
+    {
+        return this.groupMembers;
+    }
+    public Map<String, MandatoryLeaderParameter> getMandatoryFeatures()
+    {
+        return this.mandatoryFeatures;
+    }
+    public Map<String, LeaderParameter> getOptionalFeatures()
+    {
+        return this.optionalFeatures;
+    }
+
+    public boolean canBeLeader()
+    {
+        return true;
+    }
+
     protected void setup() {
         logger.info(getAID().getName() + ": Agent has started.");
         Object[] args = getArguments();
         agentParameters = new FromJsonFileAgentConfigurer(new File(String.valueOf(args[0]))).configureAgent();
 
-        doDelete();
+        this.addBehaviour(new ReceiveRequestBehaviour());
+
+        //doDelete();
     }
 }
 
