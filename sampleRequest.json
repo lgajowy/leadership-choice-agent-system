@@ -1,11 +1,22 @@
 {
     "groupId": "10",
     "mandatoryFeatures": {
-        "weight": ">30",
-        "height": "<20"
+        "height": {
+            "value": 10,
+            "weight": 11,
+            "relation": "greaterThan"
+        },
+        "niceHair": {
+            "value": 10,
+            "weight": 11
+        }
     },
     "optionalFeatures": {
         "fancyGlasses": {
+            "value": 10,
+            "weight": 11
+        },
+        "niceHair": {
             "value": 10,
             "weight": 11
         }

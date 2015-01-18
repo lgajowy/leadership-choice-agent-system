@@ -3,7 +3,7 @@ package com.pl.leadership_choice.library.agent.leader_choice_request;
 /**
  * Created by lukasz on 17.01.15.
  */
-public class OptionalParameter {
+public class LeaderParameter {
 
     private Integer value;
 

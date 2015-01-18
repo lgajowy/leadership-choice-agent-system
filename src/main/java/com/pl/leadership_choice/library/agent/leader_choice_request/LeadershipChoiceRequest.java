@@ -12,9 +12,9 @@ public class LeadershipChoiceRequest {
 
     private ArrayList groupMembers;
 
-    private Map<String, String> mandatoryFeatures;
+    private Map<String, MandatoryLeaderParameter> mandatoryFeatures;
 
-    private Map<String, OptionalParameter> optionalFeatures;
+    private Map<String, LeaderParameter> optionalFeatures;
 
     public String getGroupId() {
         return groupId;
@@ -32,19 +32,19 @@ public class LeadershipChoiceRequest {
         this.groupMembers = groupMembers;
     }
 
-    public Map<String, String> getMandatoryFeatures() {
+    public Map<String, MandatoryLeaderParameter> getMandatoryFeatures() {
         return mandatoryFeatures;
     }
 
-    public void setMandatoryFeatures(Map<String, String> mandatoryFeatures) {
+    public void setMandatoryFeatures(Map<String, MandatoryLeaderParameter> mandatoryFeatures) {
         this.mandatoryFeatures = mandatoryFeatures;
     }
 
-    public Map<String, OptionalParameter> getOptionalFeatures() {
+    public Map<String, LeaderParameter> getOptionalFeatures() {
         return optionalFeatures;
     }
 
-    public void setOptionalFeatures(Map<String, OptionalParameter> optionalFeatures) {
+    public void setOptionalFeatures(Map<String, LeaderParameter> optionalFeatures) {
         this.optionalFeatures = optionalFeatures;
     }
 }
