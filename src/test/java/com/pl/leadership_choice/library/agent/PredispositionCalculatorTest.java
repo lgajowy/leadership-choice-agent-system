@@ -20,22 +20,24 @@ public class PredispositionCalculatorTest {
     private Map<String, LeaderParameter> givenLeaderOptionalFeatures = new HashMap<>();
 
     private PredispositionCalculator calculator;
+    private MandatoryLeaderParameter mandatoryParameter;
 
     @Before
     public void setUp() throws Exception {
         calculator = new PredispositionCalculator(givenAgentFeatures, givenLeaderMandatoryFeatures, givenLeaderOptionalFeatures);
+        mandatoryParameter = new MandatoryLeaderParameter(10D, 10D, "isEqualTo");
     }
 
     @Test
-    public void shouldReturnScoreObjectWhenCalculatingScore() throws Exception {
+    public void shouldReturnParameterObjectWhenCalculatingScore() throws Exception {
         PredispositionCalculator calculator = new PredispositionCalculator(givenAgentFeatures, givenLeaderMandatoryFeatures, givenLeaderOptionalFeatures);
 
         assertThat(calculator.calculatePredisposition()).isInstanceOf(Predisposition.class);
     }
 
     @Test
-    public void ifDoesNotHaveMandatoryFeatureSpecifiedAgentShouldNotHaveScoreCalculated() throws Exception {
-        givenLeaderMandatoryFeatures.put("feature1", new MandatoryLeaderParameter());
+    public void ifDoesNotHaveMandatoryFeatureSpecifiedShouldNotHaveScoreCalculated() throws Exception {
+        givenLeaderMandatoryFeatures.put("feature1", mandatoryParameter);
 
         Predisposition predisposition = calculator.calculatePredisposition();
 
@@ -43,16 +45,53 @@ public class PredispositionCalculatorTest {
     }
 
     @Test
-    public void shouldReturnTrueIfMandatoryParametersAreMet() throws Exception {
-        MandatoryLeaderParameter parameter = new MandatoryLeaderParameter();
-        parameter.setRelation("isEqualTo");
-        parameter.setValue(10D);
-        parameter.setWeight(10D);
+    public void shouldDeterminePositivePredispositionIfMandatoryParametersAreMet() throws Exception {
         givenAgentFeatures.put("feature1", 10D);
-        givenLeaderMandatoryFeatures.put("feature1", parameter);
-        calculator.areMandatoryParametersMet();
+        givenLeaderMandatoryFeatures.put("feature1", mandatoryParameter);
 
-        assertThat(calculator.areMandatoryParametersMet()).isTrue();
+        Predisposition predisposition = calculator.calculatePredisposition();
+
+        assertThat(predisposition.getCanBecomeLeader()).isTrue();
+
+    }
+
+    @Test
+    public void shouldCalculateProperScoreIfMandatoryParametersAreMet() throws Exception {
+        givenLeaderMandatoryFeatures.put("feature1", mandatoryParameter);
+        givenAgentFeatures.put("feature1", 10D);
+
+        Predisposition predisposition = calculator.calculatePredisposition();
+
+        assertThat(predisposition.getScore()).isEqualTo(10D);
+    }
+
+    @Test
+    public void shouldCalculateScoreForMandatoryAndOptionalParameters() throws Exception {
+        givenLeaderMandatoryFeatures.put("feature1", mandatoryParameter);
+        givenAgentFeatures.put("feature1", 10D);
+
+        LeaderParameter optionalParameter = new LeaderParameter(15D);
+        givenLeaderOptionalFeatures.put("feature2", optionalParameter);
+        givenAgentFeatures.put("feature2", 15D);
+
+        Predisposition predisposition = calculator.calculatePredisposition();
+
+        assertThat(predisposition.getScore()).isEqualTo(13D);
+    }
+
+    @Test
+    public void shouldDeterminePredispositionProperly() throws Exception {
+        givenLeaderMandatoryFeatures.put("feature1", mandatoryParameter);
+        givenAgentFeatures.put("feature1", 10D);
+
+        LeaderParameter optionalParameter = new LeaderParameter(15D);
+        givenLeaderOptionalFeatures.put("feature2", optionalParameter);
+        givenAgentFeatures.put("feature2", 15D);
+
+        Predisposition predisposition = calculator.calculatePredisposition();
+
+        assertThat(predisposition.getScore()).isEqualTo(13D);
+        assertThat(predisposition.getCanBecomeLeader()).isTrue();
 
     }
 }

@@ -9,11 +9,6 @@ public class Predisposition {
 
     private Double score;
 
-    public Predisposition() {
-        this.canBecomeLeader = false;
-        this.score = 0D;
-    }
-
     public Predisposition(Double score, Boolean canBecomeLeader) {
         this.canBecomeLeader = canBecomeLeader;
         this.score = score;
@@ -21,5 +16,9 @@ public class Predisposition {
 
     public Double getScore() {
         return score;
+    }
+
+    public Boolean getCanBecomeLeader() {
+        return canBecomeLeader;
     }
 }

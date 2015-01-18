@@ -22,11 +22,9 @@ public class LeadershipChoiceRequestMapperTest {
             "    },\n" +
             "    \"optionalFeatures\": {\n" +
             "        \"fancyGlasses\": {\n" +
-            "            \"value\": 10,\n" +
             "            \"weight\": 11\n" +
             "        },\n" +
             "        \"niceHair\": {\n" +
-            "            \"value\": 10,\n" +
             "            \"weight\": 11\n" +
             "        }\n" +
             "    },\n" +

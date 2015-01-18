@@ -5,16 +5,13 @@ package com.pl.leadership_choice.library.agent.leader_choice_request;
  */
 public class LeaderParameter {
 
-    private Double value;
-
     private Double weight;
 
-    public Double getValue() {
-        return value;
+    public LeaderParameter() {
     }
 
-    public void setValue(Double value) {
-        this.value = value;
+    public LeaderParameter(Double weight) {
+        this.weight = weight;
     }
 
     public Double getWeight() {
