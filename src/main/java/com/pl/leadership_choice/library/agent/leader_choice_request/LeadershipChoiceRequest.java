@@ -1,6 +1,7 @@
 package com.pl.leadership_choice.library.agent.leader_choice_request;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -10,7 +11,7 @@ public class LeadershipChoiceRequest {
 
     private String groupId;
 
-    private ArrayList groupMembers;
+    private HashSet<String> groupMembers;
 
     private Map<String, MandatoryLeaderParameter> mandatoryFeatures;
 
@@ -24,11 +25,11 @@ public class LeadershipChoiceRequest {
         this.groupId = groupId;
     }
 
-    public ArrayList getGroupMembers() {
+    public HashSet<String> getGroupMembers() {
         return groupMembers;
     }
 
-    public void setGroupMembers(ArrayList groupMembers) {
+    public void setGroupMembers(HashSet<String> groupMembers) {
         this.groupMembers = groupMembers;
     }
 

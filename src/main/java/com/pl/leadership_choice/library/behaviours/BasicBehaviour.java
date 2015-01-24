@@ -1,6 +1,6 @@
 package com.pl.leadership_choice.library.behaviours;
 
-import com.pl.leadership_choice.proof_of_concept.LeadershipChoiceAgent;
+import com.pl.leadership_choice.library.LeadershipChoiceAgent;
 import jade.core.behaviours.Behaviour;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

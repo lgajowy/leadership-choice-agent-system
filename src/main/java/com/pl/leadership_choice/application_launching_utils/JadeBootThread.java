@@ -1,4 +1,4 @@
-package com.pl.leadership_choice.proof_of_concept.infrastructure;
+package com.pl.leadership_choice.application_launching_utils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -14,13 +14,13 @@ public class JadeBootThread extends Thread {
 
     //add the <agent-local-name>:<fully-qualified-agent-class> name here;
     // you can add more than one by semicolon separated values.
-    private final String ACTOR_NAMES_args = "leadershipChoiceAgent1:com.pl.leadership_choice.proof_of_concept.LeadershipChoiceAgent" +
+    private final String ACTOR_NAMES_args = "leadershipChoiceAgent1:com.pl.leadership_choice.library.LeadershipChoiceAgent" +
             "(sampleConfiguration.json)"
-            + ";leadershipChoiceAgent2:com.pl.leadership_choice.proof_of_concept.LeadershipChoiceAgent"
+            + ";leadershipChoiceAgent2:com.pl.leadership_choice.library.LeadershipChoiceAgent"
             + "(sampleConfiguration2.json)"
-            + ";leadershipChoiceAgent3:com.pl.leadership_choice.proof_of_concept.LeadershipChoiceAgent"
+            + ";leadershipChoiceAgent3:com.pl.leadership_choice.library.LeadershipChoiceAgent"
             + "(sampleConfiguration2.json)"
-            + ";leadershipChoiceAgent4:com.pl.leadership_choice.proof_of_concept.LeadershipChoiceAgent"
+            + ";leadershipChoiceAgent4:com.pl.leadership_choice.library.LeadershipChoiceAgent"
             + "(sampleConfiguration2.json)";
 
     private final String GUI_args = "-gui";

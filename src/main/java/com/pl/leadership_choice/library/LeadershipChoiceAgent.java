@@ -22,72 +22,45 @@
  * Boston, MA  02111-1307, USA.
  * **************************************************************
  */
-package com.pl.leadership_choice.proof_of_concept;
+package com.pl.leadership_choice.library;
 
+import com.pl.leadership_choice.library.agent.PredispositionCalculator;
 import com.pl.leadership_choice.library.agent.configuration.FromJsonFileAgentConfigurer;
 import com.pl.leadership_choice.library.agent.leader_choice_request.LeaderParameter;
 import com.pl.leadership_choice.library.agent.leader_choice_request.MandatoryLeaderParameter;
 import com.pl.leadership_choice.library.behaviours.ReceiveRequestBehaviour;
+import com.pl.leadership_choice.library.group.GroupRegistrar;
 import jade.core.Agent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class LeadershipChoiceAgent extends Agent {
     Logger logger = LoggerFactory.getLogger(LeadershipChoiceAgent.class);
 
-    private Map agentParameters;
+    private Map agentProperties = new HashMap();
 
-    private String groupId;
-    private ArrayList groupMembers;
-    private Map<String, MandatoryLeaderParameter> mandatoryFeatures;
-    private Map<String, LeaderParameter> optionalFeatures;
+    private GroupRegistrar groupRegistrar = new GroupRegistrar();
 
-    public void setGroupId(String groupId)
-    {
-        this.groupId = groupId;
-    }
-    public void setGroupMembers(ArrayList groupMembers)
-    {
-        this.groupMembers = groupMembers;
-    }
-    public void setMandatoryFeatures(Map<String, MandatoryLeaderParameter> mandatoryFeatures)
-    {
-        this.mandatoryFeatures = mandatoryFeatures;
-    }
-    public void setOptionalFeatures(Map<String, LeaderParameter> optionalFeatures)
-    {
-        this.optionalFeatures = optionalFeatures;
-    }
-    public String getGroupId()
-    {
-        return this.groupId;
-    }
-    public ArrayList getGroupMembers()
-    {
-        return this.groupMembers;
-    }
-    public Map<String, MandatoryLeaderParameter> getMandatoryFeatures()
-    {
-        return this.mandatoryFeatures;
-    }
-    public Map<String, LeaderParameter> getOptionalFeatures()
-    {
-        return this.optionalFeatures;
+    public GroupRegistrar getGroupRegistrar() {
+        return groupRegistrar;
     }
 
-    public boolean canBeLeader()
-    {
+    public boolean canAgentBecomeLeader(String groupId) {
         return true;
+    }
+
+    private void readAgentProperties(String propertiesFilePath) {
+        agentProperties = new FromJsonFileAgentConfigurer(new File(propertiesFilePath)).configureAgent();
     }
 
     protected void setup() {
         logger.info(getAID().getName() + ": Agent has started.");
-        Object[] args = getArguments();
-        agentParameters = new FromJsonFileAgentConfigurer(new File(String.valueOf(args[0]))).configureAgent();
+
+        readAgentProperties(String.valueOf(getArguments()[0]));
 
         this.addBehaviour(new ReceiveRequestBehaviour());
 

@@ -1,66 +1,53 @@
 package com.pl.leadership_choice.library.behaviours;
 
+import com.pl.leadership_choice.library.LeadershipChoiceAgent;
 import com.pl.leadership_choice.library.agent.leader_choice_request.LeadershipChoiceRequest;
 import com.pl.leadership_choice.library.agent.leader_choice_request.LeadershipChoiceRequestMapper;
-import com.pl.leadership_choice.proof_of_concept.LeadershipChoiceAgent;
+import com.pl.leadership_choice.library.group.Group;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-
 /**
  * Created by adam on 18.01.15.
  */
 public class ReceiveRequestBehaviour extends CyclicBehaviour {
-    private MessageTemplate mt=MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
-    private ACLMessage msg;
+
+    private Logger logger = LoggerFactory.getLogger(ReceiveRequestBehaviour.class);
+
+    private MessageTemplate requestMessageTemplate = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
+
+    private ACLMessage message;
+
     private LeadershipChoiceRequest request;
-    Logger logger = LoggerFactory.getLogger(ReceiveRequestBehaviour.class);
 
 
-    public void action()
-    {
+
+
+    public void action() {
+        LeadershipChoiceAgent agent = (LeadershipChoiceAgent)this.myAgent;
+
         logger.info(myAgent.getName() + " ReceiveRequestBehaviour START");
 
-        msg = myAgent.receive(mt);
-
-        if(msg == null)
-        {
+        message = myAgent.receive(requestMessageTemplate);
+        if (message == null) {
             block();
-            //return;
-        }
-        else
-        {
-            logger.info("Odebrano REQUEST: " + msg.getContent()
-                    + ". Nadawca : " + msg.getSender().getName());
+        } else {
+            logger.info("Received REQUEST: " + message.getContent() + ". From : " + message.getSender().getName());
+            request = new LeadershipChoiceRequestMapper(message.getContent()).mapRequest();
 
-            LeadershipChoiceRequestMapper mapper;
-            mapper = new LeadershipChoiceRequestMapper(msg.getContent());
-            request = mapper.mapRequest();
+            Group newlyRegisteredGroup = new Group(request.getGroupMembers(), request.getMandatoryFeatures(), request.getOptionalFeatures());
+            agent.getGroupRegistrar().registerGroup(request.getGroupId(), newlyRegisteredGroup);
 
-            ((LeadershipChoiceAgent)myAgent).setGroupId(request.getGroupId());
-            ((LeadershipChoiceAgent)myAgent).setGroupMembers(request.getGroupMembers());
-            ((LeadershipChoiceAgent)myAgent).setMandatoryFeatures(request.getMandatoryFeatures());
-            ((LeadershipChoiceAgent)myAgent).setOptionalFeatures(request.getOptionalFeatures());
-
-            //logger.info("Id grupy z komunikatu: " + ((LeadershipChoiceAgent)myAgent).groupId);
-            //logger.info((String) ((LeadershipChoiceAgent)myAgent).groupMembers.get(0));
-            //logger.info((String) ((LeadershipChoiceAgent)myAgent).mandatoryFeatures.get(0));
-            //logger.info((String) ((LeadershipChoiceAgent)myAgent).optionalFeatures.get(0).getValue());
-
-            if(((LeadershipChoiceAgent) myAgent).canBeLeader())
-            {
+            if (((LeadershipChoiceAgent) myAgent).canAgentBecomeLeader(request.getGroupId())) {
                 //może być liderem
 
                 //zapytaj wszystkich
                 myAgent.addBehaviour(new SendProposalsToAll());
                 myAgent.addBehaviour(new ReceiveProposalBehaviour());
-            }
-            else
-            {
+            } else {
                 //nie może być liderem
 
                 //czekaj aż ktoś Cię zapyta
