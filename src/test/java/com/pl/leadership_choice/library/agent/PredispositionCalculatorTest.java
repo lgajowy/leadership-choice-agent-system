@@ -69,7 +69,6 @@ public class PredispositionCalculatorTest {
     public void shouldCalculateScoreForMandatoryAndOptionalParameters() throws Exception {
         givenLeaderMandatoryFeatures.put("feature1", mandatoryParameter);
         givenAgentFeatures.put("feature1", 10D);
-
         LeaderParameter optionalParameter = new LeaderParameter(15D);
         givenLeaderOptionalFeatures.put("feature2", optionalParameter);
         givenAgentFeatures.put("feature2", 15D);
@@ -83,7 +82,6 @@ public class PredispositionCalculatorTest {
     public void shouldDeterminePredispositionProperly() throws Exception {
         givenLeaderMandatoryFeatures.put("feature1", mandatoryParameter);
         givenAgentFeatures.put("feature1", 10D);
-
         LeaderParameter optionalParameter = new LeaderParameter(15D);
         givenLeaderOptionalFeatures.put("feature2", optionalParameter);
         givenAgentFeatures.put("feature2", 15D);

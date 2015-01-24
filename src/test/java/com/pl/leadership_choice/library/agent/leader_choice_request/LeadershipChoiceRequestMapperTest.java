@@ -17,7 +17,8 @@ public class LeadershipChoiceRequestMapperTest {
             "        },\n" +
             "        \"niceHair\": {\n" +
             "            \"value\": 10,\n" +
-            "            \"weight\": 11\n" +
+            "            \"weight\": 11,\n" +
+            "            \"relation\": \"greaterThan\"\n" +
             "        }\n" +
             "    },\n" +
             "    \"optionalFeatures\": {\n" +
@@ -36,7 +37,7 @@ public class LeadershipChoiceRequestMapperTest {
 
 
     @Test
-    public void shouldMapGivenRequestToObject(){
+    public void shouldMapGivenRequestToObject() {
         LeadershipChoiceRequest leadershipChoiceRequest = new LeadershipChoiceRequestMapper(givenLeadershipRequest).mapRequest();
         assertThat(leadershipChoiceRequest).isNotNull();
     }
