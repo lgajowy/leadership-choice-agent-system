@@ -24,12 +24,10 @@
  */
 package com.pl.leadership_choice.library;
 
-import com.pl.leadership_choice.library.agent.PredispositionCalculator;
-import com.pl.leadership_choice.library.agent.configuration.FromJsonFileAgentConfigurer;
-import com.pl.leadership_choice.library.agent.leader_choice_request.LeaderParameter;
-import com.pl.leadership_choice.library.agent.leader_choice_request.MandatoryLeaderParameter;
+import com.pl.leadership_choice.library.infrastructure.configuration.FromJsonFileAgentConfigurer;
 import com.pl.leadership_choice.library.behaviours.ReceiveRequestBehaviour;
-import com.pl.leadership_choice.library.group.GroupRegistrar;
+import com.pl.leadership_choice.library.domain.group.GroupRegistrar;
+import com.pl.leadership_choice.library.domain.group.member.GroupMembershipRegistrar;
 import jade.core.Agent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,13 +42,12 @@ public class LeadershipChoiceAgent extends Agent {
     private Map agentProperties = new HashMap();
 
     private GroupRegistrar groupRegistrar = new GroupRegistrar();
+    private GroupMembershipRegistrar groupMembershipRegistrar = new GroupMembershipRegistrar();
 
-    public GroupRegistrar getGroupRegistrar() {
-        return groupRegistrar;
-    }
+
 
     public boolean canAgentBecomeLeader(String groupId) {
-        return true;
+        return groupMembershipRegistrar.getGroupMemberships().get(groupId).getPredisposition().getCanBecomeLeader();
     }
 
     private void readAgentProperties(String propertiesFilePath) {
@@ -65,6 +62,18 @@ public class LeadershipChoiceAgent extends Agent {
         this.addBehaviour(new ReceiveRequestBehaviour());
 
         //doDelete();
+    }
+
+    public GroupRegistrar getGroupRegistrar() {
+        return groupRegistrar;
+    }
+
+    public GroupMembershipRegistrar getGroupMembershipRegistrar() {
+        return groupMembershipRegistrar;
+    }
+
+    public Map getAgentProperties() {
+        return agentProperties;
     }
 }
 

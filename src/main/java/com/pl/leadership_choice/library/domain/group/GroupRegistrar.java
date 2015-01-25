@@ -1,7 +1,7 @@
-package com.pl.leadership_choice.library.group;
+package com.pl.leadership_choice.library.domain.group;
 
-import com.pl.leadership_choice.library.agent.leader_choice_request.LeaderParameter;
-import com.pl.leadership_choice.library.agent.leader_choice_request.MandatoryLeaderParameter;
+import com.pl.leadership_choice.library.domain.group.leader.OptionalLeaderParameter;
+import com.pl.leadership_choice.library.domain.group.leader.MandatoryLeaderParameter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,20 +26,20 @@ public class GroupRegistrar {
         groups.put(groupId, group);
     }
 
-    public Set<String> getMembersForId(String id) {
+    public Set<String> getMembersForGroupsId(String id) {
         assertIdPresence(id);
         return groups.get(id).getMembers();
     }
 
     public Map<String, MandatoryLeaderParameter> getMandatoryLeaderParametersForId(String id) {
         assertIdPresence(id);
-        return groups.get(id).getGroupLeadersMandatoryParameters();
+        return groups.get(id).getGroupLeaderRequirements().getGroupLeadersMandatoryParameters();
     }
 
-    public Map<String, LeaderParameter> getOptionalLeaderParametersForId(String id) {
+    public Map<String, OptionalLeaderParameter> getOptionalLeaderParametersForId(String id) {
         assertIdPresence(id);
 
-        return groups.get(id).getGroupLeadersOptionalParameters();
+        return groups.get(id).getGroupLeaderRequirements().getGroupLeadersOptionalParameters();
     }
 
     private void assertIdPresence(String id) {

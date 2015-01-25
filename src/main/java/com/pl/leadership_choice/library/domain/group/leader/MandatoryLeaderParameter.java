@@ -1,11 +1,13 @@
-package com.pl.leadership_choice.library.agent.leader_choice_request;
+package com.pl.leadership_choice.library.domain.group.leader;
 
 /**
  * Created by lukasz on 18.01.15.
  */
-public class MandatoryLeaderParameter extends LeaderParameter {
+public class MandatoryLeaderParameter {
 
     private Double value;
+
+    private Double weight;
 
     private String relation;
 
@@ -13,8 +15,8 @@ public class MandatoryLeaderParameter extends LeaderParameter {
     }
 
     public MandatoryLeaderParameter(Double value, Double weight, String relation) {
-        super(weight);
         this.value = value;
+        this.weight = weight;
         this.relation = relation;
     }
 
@@ -24,6 +26,14 @@ public class MandatoryLeaderParameter extends LeaderParameter {
 
     public void setValue(Double value) {
         this.value = value;
+    }
+
+    public Double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
     }
 
     public String getRelation() {

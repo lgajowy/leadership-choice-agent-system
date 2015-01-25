@@ -1,6 +1,8 @@
-package com.pl.leadership_choice.library.agent.leader_choice_request;
+package com.pl.leadership_choice.library.infrastructure.leader_choice_request;
 
-import java.util.ArrayList;
+import com.pl.leadership_choice.library.domain.group.leader.MandatoryLeaderParameter;
+import com.pl.leadership_choice.library.domain.group.leader.OptionalLeaderParameter;
+
 import java.util.HashSet;
 import java.util.Map;
 
@@ -15,7 +17,7 @@ public class LeadershipChoiceRequest {
 
     private Map<String, MandatoryLeaderParameter> mandatoryFeatures;
 
-    private Map<String, LeaderParameter> optionalFeatures;
+    private Map<String, OptionalLeaderParameter> optionalFeatures;
 
     public String getGroupId() {
         return groupId;
@@ -41,11 +43,11 @@ public class LeadershipChoiceRequest {
         this.mandatoryFeatures = mandatoryFeatures;
     }
 
-    public Map<String, LeaderParameter> getOptionalFeatures() {
+    public Map<String, OptionalLeaderParameter> getOptionalFeatures() {
         return optionalFeatures;
     }
 
-    public void setOptionalFeatures(Map<String, LeaderParameter> optionalFeatures) {
+    public void setOptionalFeatures(Map<String, OptionalLeaderParameter> optionalFeatures) {
         this.optionalFeatures = optionalFeatures;
     }
 }

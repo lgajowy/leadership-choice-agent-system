@@ -1,4 +1,4 @@
-package com.pl.leadership_choice.library.agent;
+package com.pl.leadership_choice.library.domain.group.member;
 
 /**
  * Created by lukasz on 18.01.15.

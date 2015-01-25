@@ -1,7 +1,7 @@
-package com.pl.leadership_choice.library.group;
+package com.pl.leadership_choice.library.domain.group;
 
-import com.pl.leadership_choice.library.agent.leader_choice_request.LeaderParameter;
-import com.pl.leadership_choice.library.agent.leader_choice_request.MandatoryLeaderParameter;
+import com.pl.leadership_choice.library.domain.group.leader.OptionalLeaderParameter;
+import com.pl.leadership_choice.library.domain.group.leader.MandatoryLeaderParameter;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,7 +18,7 @@ public class GroupRegistrarTest {
     private final String expectedGroupId = "xxx";
     private Set<String> groupMembers;
     private Map<String, MandatoryLeaderParameter> groupLeaderMandatoryParameters;
-    private Map<String, LeaderParameter> groupLeaderOptionalFeatures;
+    private Map<String, OptionalLeaderParameter> groupLeaderOptionalFeatures;
     private Group expectedGroup;
     private GroupRegistrar registrar;
 
@@ -53,12 +53,12 @@ public class GroupRegistrarTest {
         groupMembers.add("aNewGroupMemberWhoJustJoined");
         registrar.registerGroup(expectedGroupId, expectedGroup);
 
-        assertThat(registrar.getMembersForId(expectedGroupId).size()).isEqualTo(1);
+        assertThat(registrar.getMembersForGroupsId(expectedGroupId).size()).isEqualTo(1);
     }
 
     @Test
     public void shouldThrowExceptionIfTryingToGetMembersOfANotRegisteredGroup() throws Exception {
-        catchException(registrar).getMembersForId(expectedGroupId);
+        catchException(registrar).getMembersForGroupsId(expectedGroupId);
 
         assertThat(caughtException()).isInstanceOf(RuntimeException.class);
     }
@@ -67,7 +67,7 @@ public class GroupRegistrarTest {
     public void shouldGetMembers() throws Exception {
         groupMembers.add("xyz");
         registrar.registerGroup(expectedGroupId, expectedGroup);
-        Set<String> membersForId = registrar.getMembersForId(expectedGroupId);
+        Set<String> membersForId = registrar.getMembersForGroupsId(expectedGroupId);
 
         assertThat(membersForId).isNotEmpty();
     }
@@ -98,10 +98,10 @@ public class GroupRegistrarTest {
 
     @Test
     public void shouldGetOptionalLeaderParameters() throws Exception {
-        groupLeaderOptionalFeatures.put("xyz", new LeaderParameter());
+        groupLeaderOptionalFeatures.put("xyz", new OptionalLeaderParameter());
         registrar.registerGroup(expectedGroupId, expectedGroup);
 
-        Map<String, LeaderParameter> optionalParameters = registrar.getOptionalLeaderParametersForId(expectedGroupId);
+        Map<String, OptionalLeaderParameter> optionalParameters = registrar.getOptionalLeaderParametersForId(expectedGroupId);
 
         assertThat(optionalParameters).isNotEmpty();
     }
