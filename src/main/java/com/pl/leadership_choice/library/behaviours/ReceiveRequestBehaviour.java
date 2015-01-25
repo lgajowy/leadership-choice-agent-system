@@ -1,71 +1,71 @@
 package com.pl.leadership_choice.library.behaviours;
 
-import com.pl.leadership_choice.library.agent.leader_choice_request.LeadershipChoiceRequest;
-import com.pl.leadership_choice.library.agent.leader_choice_request.LeadershipChoiceRequestMapper;
-import com.pl.leadership_choice.proof_of_concept.LeadershipChoiceAgent;
+import com.pl.leadership_choice.library.LeadershipChoiceAgent;
+import com.pl.leadership_choice.library.infrastructure.leader_choice_request.LeadershipChoiceRequest;
+import com.pl.leadership_choice.library.infrastructure.leader_choice_request.LeadershipChoiceRequestMapper;
+import com.pl.leadership_choice.library.domain.group.Group;
+import com.pl.leadership_choice.library.domain.group.member.GroupMember;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-
 /**
  * Created by adam on 18.01.15.
  */
 public class ReceiveRequestBehaviour extends CyclicBehaviour {
-    private MessageTemplate mt=MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
-    private ACLMessage msg;
+
+    private Logger logger = LoggerFactory.getLogger(ReceiveRequestBehaviour.class);
+
+    private MessageTemplate requestMessageTemplate = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
+
+    private ACLMessage message;
+
     private LeadershipChoiceRequest request;
-    Logger logger = LoggerFactory.getLogger(ReceiveRequestBehaviour.class);
 
+    private LeadershipChoiceAgent agent = (LeadershipChoiceAgent) this.myAgent;
 
-    public void action()
-    {
+    public void action() {
         logger.info(myAgent.getName() + " ReceiveRequestBehaviour START");
 
-        msg = myAgent.receive(mt);
-
-        if(msg == null)
-        {
+        message = myAgent.receive(requestMessageTemplate);
+        if (message == null) {
             block();
-            //return;
-        }
-        else
-        {
-            logger.info("Odebrano REQUEST: " + msg.getContent()
-                    + ". Nadawca : " + msg.getSender().getName());
+        } else {
+            logger.info(agent.getAID().getName() + ": Received REQUEST: " + message.getContent() + ". From : " + message.getSender().getName());
+            request = new LeadershipChoiceRequestMapper(message.getContent()).mapRequest();
 
-            LeadershipChoiceRequestMapper mapper;
-            mapper = new LeadershipChoiceRequestMapper(msg.getContent());
-            request = mapper.mapRequest();
+            Group newlyRegisteredGroup = registerGroup();
+            logger.info(agent.getAID().getName() + ": Registered new group with id: " + request.getGroupId());
+            GroupMember agentMembershipInGroup = registerAgentsMembership(newlyRegisteredGroup);
+            logger.debug(agent.getAID().getName() + ": Registered the agent as a member of the group: " + request.getGroupId());
 
-            ((LeadershipChoiceAgent)myAgent).setGroupId(request.getGroupId());
-            ((LeadershipChoiceAgent)myAgent).setGroupMembers(request.getGroupMembers());
-            ((LeadershipChoiceAgent)myAgent).setMandatoryFeatures(request.getMandatoryFeatures());
-            ((LeadershipChoiceAgent)myAgent).setOptionalFeatures(request.getOptionalFeatures());
 
-            //logger.info("Id grupy z komunikatu: " + ((LeadershipChoiceAgent)myAgent).groupId);
-            //logger.info((String) ((LeadershipChoiceAgent)myAgent).groupMembers.get(0));
-            //logger.info((String) ((LeadershipChoiceAgent)myAgent).mandatoryFeatures.get(0));
-            //logger.info((String) ((LeadershipChoiceAgent)myAgent).optionalFeatures.get(0).getValue());
+            if (agentMembershipInGroup.getPredisposition().getCanBecomeLeader()) {
+                logger.info(agent.getAID().getName() + ": Agent can become leader of group: " + request.getGroupId()
+                + " It's score: " + agentMembershipInGroup.getPredisposition().getScore());
 
-            if(((LeadershipChoiceAgent) myAgent).canBeLeader())
-            {
-                //może być liderem
-
-                //zapytaj wszystkich
-                myAgent.addBehaviour(new SendProposalsToAll());
+                logger.info(agent.getAID().getName() + ": Sending proposals to other members... ");
+                myAgent.addBehaviour(new SendProposalsToAllGroupMembers(request.getGroupId()));
                 myAgent.addBehaviour(new ReceiveProposalBehaviour());
-            }
-            else
-            {
+            } else {
                 //nie może być liderem
 
                 //czekaj aż ktoś Cię zapyta
             }
         }
+    }
+
+    private GroupMember registerAgentsMembership(Group newlyRegisteredGroup) {
+        return agent.getGroupMembershipRegistrar().registerAgent(request.getGroupId(),
+                newlyRegisteredGroup.getGroupLeaderRequirements(), agent.getAgentProperties());
+    }
+
+    private Group registerGroup() {
+        Group newlyRegisteredGroup = new Group(request.getGroupMembers(), request.getMandatoryFeatures(), request.getOptionalFeatures());
+        agent.getGroupRegistrar().registerGroup(request.getGroupId(), newlyRegisteredGroup);
+        return newlyRegisteredGroup;
     }
 
 

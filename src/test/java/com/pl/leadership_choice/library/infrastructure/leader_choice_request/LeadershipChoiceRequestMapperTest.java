@@ -1,4 +1,4 @@
-package com.pl.leadership_choice.library.agent.leader_choice_request;
+package com.pl.leadership_choice.library.infrastructure.leader_choice_request;
 
 import org.junit.Test;
 

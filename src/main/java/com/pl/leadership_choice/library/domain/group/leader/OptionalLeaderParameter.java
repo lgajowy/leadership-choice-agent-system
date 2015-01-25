@@ -1,16 +1,16 @@
-package com.pl.leadership_choice.library.agent.leader_choice_request;
+package com.pl.leadership_choice.library.domain.group.leader;
 
 /**
  * Created by lukasz on 17.01.15.
  */
-public class LeaderParameter {
+public class OptionalLeaderParameter {
 
     private Double weight;
 
-    public LeaderParameter() {
+    public OptionalLeaderParameter() {
     }
 
-    public LeaderParameter(Double weight) {
+    public OptionalLeaderParameter(Double weight) {
         this.weight = weight;
     }
 

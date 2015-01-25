@@ -1,6 +1,5 @@
 package com.pl.leadership_choice.library.behaviours;
 
-import com.pl.leadership_choice.proof_of_concept.LeadershipChoiceAgent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;

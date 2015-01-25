@@ -1,6 +1,6 @@
 {
     "groupId": "10",
-    "mandatoryFeatures": {
+    "leaderMandatoryFeatures": {
         "height": {
             "value": 10,
             "weight": 11,
@@ -11,7 +11,7 @@
             "weight": 11
         }
     },
-    "optionalFeatures": {
+    "leaderOptionalFeatures": {
         "fancyGlasses": {
             "value": 10,
             "weight": 11

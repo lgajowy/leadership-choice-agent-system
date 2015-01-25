@@ -1,7 +1,5 @@
-package com.pl.leadership_choice.proof_of_concept;
+package com.pl.leadership_choice.application_launching_utils;
 
-
-import com.pl.leadership_choice.proof_of_concept.infrastructure.JadeBootThread;
 
 /**
  * Created by lukasz on 17.01.15.

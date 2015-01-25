@@ -1,4 +1,4 @@
-package com.pl.leadership_choice.library.agent.configuration;
+package com.pl.leadership_choice.library.infrastructure.configuration;
 
 import java.util.Map;
 

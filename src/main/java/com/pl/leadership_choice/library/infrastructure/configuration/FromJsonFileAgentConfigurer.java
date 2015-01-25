@@ -1,4 +1,4 @@
-package com.pl.leadership_choice.library.agent.configuration;
+package com.pl.leadership_choice.library.infrastructure.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
