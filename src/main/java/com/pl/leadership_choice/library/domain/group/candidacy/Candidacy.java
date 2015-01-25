@@ -20,6 +20,9 @@ public class Candidacy {
 
     private Set<String> pretenderSubordinates;
 
+    public Candidacy() {
+
+    }
     public Candidacy(String pretenderId, String groupId, Double pretenderScore, Set<String> pretenderSubordinates) {
         this.pretenderId = pretenderId;
         this.groupId = groupId;

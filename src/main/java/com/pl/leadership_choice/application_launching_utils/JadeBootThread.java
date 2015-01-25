@@ -19,7 +19,7 @@ public class JadeBootThread extends Thread {
             + ";leadershipChoiceAgent2:com.pl.leadership_choice.library.LeadershipChoiceAgent"
             + "(sampleConfiguration2.json)"
             + ";leadershipChoiceAgent3:com.pl.leadership_choice.library.LeadershipChoiceAgent"
-            + "(sampleConfiguration2.json)"
+            + "(sampleConfiguration.json)"
             + ";leadershipChoiceAgent4:com.pl.leadership_choice.library.LeadershipChoiceAgent"
             + "(sampleConfiguration2.json)";
 

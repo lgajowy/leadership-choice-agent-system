@@ -42,6 +42,7 @@ public class ReceiveProposalBehaviour extends CyclicBehaviour {
 
 
             try{
+
                 candidacy = new ObjectMapper().readValue(msg.getContent(), Candidacy.class);
 
                 //do i have a leader?
@@ -50,26 +51,33 @@ public class ReceiveProposalBehaviour extends CyclicBehaviour {
                     //should we compare our scores?
                     if (((LeadershipChoiceAgent)myAgent).canAgentBecomeLeader(candidacy.getGroupId())){
                         //lets check our scores
+                        //TODO: if scores are equal, they both consider themselves leaders. (>=)
                         if (((LeadershipChoiceAgent)myAgent).getGroupMembershipRegistrar().
                                 getGroupMemberships().get(candidacy.getGroupId()).
                                 getPredisposition().getScore() >= candidacy.getPretenderScore()) {
                             //i have better score - i will be your leader
+                            logger.info("I will be your leader, "+candidacy.getPretenderId());
 
                         } else {
                             //you have better score - i agree you will be my leader
+                            logger.info("You will be my leader, "+candidacy.getPretenderId());
                         }
                     }
                     else{
                         //I cannot be leader in this group
                         //i agree that pretender will be mine
+
+                        logger.info("Icannot be leader, you will be mine, "+candidacy.getPretenderId());
                     }
                 } else {
                     //yes, i do already have a leader - rejecting the offer
+
+                    logger.info("I already have an leader. Sorry, "+candidacy.getPretenderId());
                 }
 
 
             } catch (IOException e) {
-                logger.error("Couldn't parse configuration file!");
+                logger.error("Couldn't parse candidacy msg!");
                 e.printStackTrace();
             }
         }
