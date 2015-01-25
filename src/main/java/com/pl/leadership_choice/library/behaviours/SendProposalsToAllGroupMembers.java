@@ -1,6 +1,8 @@
 package com.pl.leadership_choice.library.behaviours;
 
 import com.pl.leadership_choice.library.LeadershipChoiceAgent;
+import com.pl.leadership_choice.library.domain.group.candidacy.Candidacy;
+import com.pl.leadership_choice.library.infrastructure.JsonMapper;
 import jade.core.AID;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -28,11 +30,14 @@ public class SendProposalsToAllGroupMembers extends SimpleBehaviour {
     }
 
     public void action() {
+        Candidacy agentCandidacy = new Candidacy(agent.getAID().getName(),
+                agent.getGroupMembershipRegistrar().getGroupMemberships().get(groupId).getPredisposition().getScore(), null);
+
         msg = new ACLMessage(ACLMessage.PROPOSE);
-        msg.setContent("PROPOZYCJA");
+        msg.setContent(JsonMapper.createJsonFromObject(agentCandidacy));
         addMessageReceivers();
 
-        logger.info(myAgent.getName() + "Sending proposal message to all members..." + msg.getContent());
+        logger.info(agent.getAID().getName() + ": Sending proposal message to all members..." + msg.getContent());
         myAgent.send(msg);
     }
 

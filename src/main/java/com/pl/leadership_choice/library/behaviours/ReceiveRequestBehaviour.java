@@ -1,10 +1,10 @@
 package com.pl.leadership_choice.library.behaviours;
 
 import com.pl.leadership_choice.library.LeadershipChoiceAgent;
-import com.pl.leadership_choice.library.infrastructure.leader_choice_request.LeadershipChoiceRequest;
-import com.pl.leadership_choice.library.infrastructure.leader_choice_request.LeadershipChoiceRequestMapper;
 import com.pl.leadership_choice.library.domain.group.Group;
 import com.pl.leadership_choice.library.domain.group.member.GroupMember;
+import com.pl.leadership_choice.library.infrastructure.leader_choice_request.LeadershipChoiceRequest;
+import com.pl.leadership_choice.library.infrastructure.leader_choice_request.LeadershipChoiceRequestMapper;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -41,19 +41,19 @@ public class ReceiveRequestBehaviour extends CyclicBehaviour {
             GroupMember agentMembershipInGroup = registerAgentsMembership(newlyRegisteredGroup);
             logger.debug(agent.getAID().getName() + ": Registered the agent as a member of the group: " + request.getGroupId());
 
+            sendProposalsIfAgentCanBecomeLeader(agentMembershipInGroup);
+            myAgent.addBehaviour(new ReceiveProposalBehaviour());
 
-            if (agentMembershipInGroup.getPredisposition().getCanBecomeLeader()) {
-                logger.info(agent.getAID().getName() + ": Agent can become leader of group: " + request.getGroupId()
-                + " It's score: " + agentMembershipInGroup.getPredisposition().getScore());
+        }
+    }
 
-                logger.info(agent.getAID().getName() + ": Sending proposals to other members... ");
-                myAgent.addBehaviour(new SendProposalsToAllGroupMembers(request.getGroupId()));
-                myAgent.addBehaviour(new ReceiveProposalBehaviour());
-            } else {
-                //nie może być liderem
+    private void sendProposalsIfAgentCanBecomeLeader(GroupMember agentMembershipInGroup) {
+        if (agentMembershipInGroup.getPredisposition().getCanBecomeLeader()) {
+            logger.info(agent.getAID().getName() + ": Agent can become leader of group: " + request.getGroupId()
+                    + " It's score: " + agentMembershipInGroup.getPredisposition().getScore());
 
-                //czekaj aż ktoś Cię zapyta
-            }
+            logger.info(agent.getAID().getName() + ": Sending proposals to other members... ");
+            myAgent.addBehaviour(new SendProposalsToAllGroupMembers(request.getGroupId()));
         }
     }
 
