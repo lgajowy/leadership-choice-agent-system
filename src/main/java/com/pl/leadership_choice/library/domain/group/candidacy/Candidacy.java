@@ -14,12 +14,15 @@ public class Candidacy {
 
     private String pretenderId;
 
+    private String groupId;
+
     private Double pretenderScore;
 
     private Set<String> pretenderSubordinates;
 
-    public Candidacy(String pretenderId, Double pretenderScore, Set<String> pretenderSubordinates) {
+    public Candidacy(String pretenderId, String groupId, Double pretenderScore, Set<String> pretenderSubordinates) {
         this.pretenderId = pretenderId;
+        this.groupId = groupId;
         this.pretenderScore = pretenderScore;
         this.pretenderSubordinates = Optional.fromNullable(pretenderSubordinates).or(new HashSet<String>());
     }
@@ -28,8 +31,16 @@ public class Candidacy {
         return pretenderId;
     }
 
+    public String getGroupId(){
+        return this.groupId;
+    }
+
     public void setPretenderId(String pretenderId) {
         this.pretenderId = pretenderId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
     public Double getPretenderScore() {

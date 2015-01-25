@@ -28,6 +28,7 @@ import com.pl.leadership_choice.library.infrastructure.configuration.FromJsonFil
 import com.pl.leadership_choice.library.behaviours.ReceiveRequestBehaviour;
 import com.pl.leadership_choice.library.domain.group.GroupRegistrar;
 import com.pl.leadership_choice.library.domain.group.member.GroupMembershipRegistrar;
+import jade.core.AID;
 import jade.core.Agent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +41,7 @@ public class LeadershipChoiceAgent extends Agent {
     Logger logger = LoggerFactory.getLogger(LeadershipChoiceAgent.class);
 
     private Map agentProperties = new HashMap();
+
 
     private GroupRegistrar groupRegistrar = new GroupRegistrar();
     private GroupMembershipRegistrar groupMembershipRegistrar = new GroupMembershipRegistrar();

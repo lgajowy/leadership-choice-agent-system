@@ -30,19 +30,21 @@ public class SendProposalsToAllGroupMembers extends SimpleBehaviour {
     }
 
     public void action() {
-        Candidacy agentCandidacy = new Candidacy(agent.getAID().getName(),
-                agent.getGroupMembershipRegistrar().getGroupMemberships().get(groupId).getPredisposition().getScore(), null);
+        Candidacy agentCandidacy = new Candidacy(myAgent.getAID().getName(),
+                groupId,
+                ((LeadershipChoiceAgent)myAgent).getGroupMembershipRegistrar().getGroupMemberships().get(groupId).getPredisposition().getScore(),
+                null);
 
         msg = new ACLMessage(ACLMessage.PROPOSE);
         msg.setContent(JsonMapper.createJsonFromObject(agentCandidacy));
         addMessageReceivers();
 
-        logger.info(agent.getAID().getName() + ": Sending proposal message to all members..." + msg.getContent());
+        logger.info(myAgent.getAID().getName() + ": Sending proposal message to all members..." + msg.getContent());
         myAgent.send(msg);
     }
 
     private void addMessageReceivers() {
-        Set<String> members = agent.getGroupRegistrar().getMembersForGroupsId(groupId);
+        Set<String> members = ((LeadershipChoiceAgent)myAgent).getGroupRegistrar().getMembersForGroupsId(groupId);
         for (String s : members) {
             if (!s.equals(myAgent.getName()))
                 msg.addReceiver(new AID(s, AID.ISGUID));

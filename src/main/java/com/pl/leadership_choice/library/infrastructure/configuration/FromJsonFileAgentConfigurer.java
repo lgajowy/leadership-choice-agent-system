@@ -28,7 +28,7 @@ public class FromJsonFileAgentConfigurer implements AgentConfigurer {
         try {
             features = new ObjectMapper().readValue(jsonConfigFile, HashMap.class);
         } catch (IOException e) {
-            logger.error("Couldn't parse comfiguration file!");
+            logger.error("Couldn't parse configuration file!");
             e.printStackTrace();
         }
         return features;

@@ -1,5 +1,7 @@
 package com.pl.leadership_choice.library.domain.group.member;
 
+import jade.core.AID;
+
 /**
  * Created by lukasz on 25.01.15.
  */
@@ -9,9 +11,12 @@ public class GroupMember {
 
     private Predisposition predisposition;
 
-    public GroupMember(String id, Predisposition predisposition) {
+    private AID currentLeaderAID;
+
+    public GroupMember(String id, Predisposition predisposition, AID currentLeaderAID) {
         this.id = id;
         this.predisposition = predisposition;
+        this.currentLeaderAID = currentLeaderAID;
     }
 
     public String getId() {
@@ -29,4 +34,14 @@ public class GroupMember {
     public void setPredisposition(Predisposition predisposition) {
         this.predisposition = predisposition;
     }
+
+    public AID getCurrentLeaderAID() {
+        return this.currentLeaderAID;
+    }
+
+    public void setCurrentLeaderAID(AID currentLeaderAID) {
+        this.currentLeaderAID = currentLeaderAID;
+    }
+
+
 }

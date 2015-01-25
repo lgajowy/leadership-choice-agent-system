@@ -10,8 +10,16 @@ import java.util.Map;
 
 /**
  * Created by lukasz on 18.01.15.
+ *
+ * 25.01.2015 - adam - i created these constants to keep those values more visible
  */
 public class PredispositionCalculator {
+
+    private final static String GREATER_THAN = "greaterThan";
+    private final static String EQUAL_TO = "isEqualTo";
+    private final static String LESS_THAN = "isLessThan";
+    private final static String LESS_OR_EQUAL_TO = "isLessOrEqualTo";
+    private final static String GREATER_OR_EQUAL_TO = "isGreaterOrEqualTo";
 
     private Map<String, MandatoryLeaderParameter> mandatoryFeatures = new HashMap<>();
 
@@ -30,6 +38,10 @@ public class PredispositionCalculator {
         } else {
             return new Predisposition(calculateScore(agentParameters), true);
         }
+    }
+
+    public String comparePretenders() {
+        return "";
     }
 
     private Double calculateScore(Map<String, Double> agentFeatures) {
@@ -86,23 +98,23 @@ public class PredispositionCalculator {
     }
 
     private boolean isParameterMet(Double checkedAgentValue, MandatoryLeaderParameter checkedLeaderParameter) {
-        if ((checkedLeaderParameter.getRelation()).equals("isEqualTo")) {
+        if ((checkedLeaderParameter.getRelation()).equals(this.EQUAL_TO)) {
             if (checkedAgentValue.equals(checkedLeaderParameter.getValue())) {
                 return true;
             }
-        } else if ((checkedLeaderParameter.getRelation()).equals("isGreaterThan")) {
+        } else if ((checkedLeaderParameter.getRelation()).equals(this.GREATER_THAN)) {
             if (checkedAgentValue > checkedLeaderParameter.getValue()) {
                 return true;
             }
-        } else if ((checkedLeaderParameter.getRelation()).equals("isLessThan")) {
+        } else if ((checkedLeaderParameter.getRelation()).equals(this.LESS_THAN)) {
             if (checkedAgentValue < checkedLeaderParameter.getValue()) {
                 return true;
             }
-        } else if ((checkedLeaderParameter.getRelation()).equals("isLessOrEqualTo")) {
+        } else if ((checkedLeaderParameter.getRelation()).equals(this.LESS_OR_EQUAL_TO)) {
             if (checkedAgentValue <= checkedLeaderParameter.getValue()) {
                 return true;
             }
-        } else if ((checkedLeaderParameter.getRelation()).equals("isGreaterOrEqualTo")) {
+        } else if ((checkedLeaderParameter.getRelation()).equals(this.GREATER_OR_EQUAL_TO)) {
             if (checkedAgentValue >= checkedLeaderParameter.getValue()) {
                 return true;
             }

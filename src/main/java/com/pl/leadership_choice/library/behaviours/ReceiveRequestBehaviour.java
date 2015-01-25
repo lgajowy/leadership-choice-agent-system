@@ -24,6 +24,7 @@ public class ReceiveRequestBehaviour extends CyclicBehaviour {
 
     private LeadershipChoiceRequest request;
 
+    //TODO: ten cast poniżej nie działa
     private LeadershipChoiceAgent agent = (LeadershipChoiceAgent) this.myAgent;
 
     public void action() {
@@ -33,13 +34,13 @@ public class ReceiveRequestBehaviour extends CyclicBehaviour {
         if (message == null) {
             block();
         } else {
-            logger.info(agent.getAID().getName() + ": Received REQUEST: " + message.getContent() + ". From : " + message.getSender().getName());
+            logger.info(myAgent.getAID().getName() + ": Received REQUEST: " + message.getContent() + ". From : " + message.getSender().getName());
             request = new LeadershipChoiceRequestMapper(message.getContent()).mapRequest();
 
             Group newlyRegisteredGroup = registerGroup();
-            logger.info(agent.getAID().getName() + ": Registered new group with id: " + request.getGroupId());
+            logger.info(myAgent.getAID().getName() + ": Registered new group with id: " + request.getGroupId());
             GroupMember agentMembershipInGroup = registerAgentsMembership(newlyRegisteredGroup);
-            logger.debug(agent.getAID().getName() + ": Registered the agent as a member of the group: " + request.getGroupId());
+            logger.debug(myAgent.getAID().getName() + ": Registered the agent as a member of the group: " + request.getGroupId());
 
             sendProposalsIfAgentCanBecomeLeader(agentMembershipInGroup);
             myAgent.addBehaviour(new ReceiveProposalBehaviour());
@@ -49,22 +50,28 @@ public class ReceiveRequestBehaviour extends CyclicBehaviour {
 
     private void sendProposalsIfAgentCanBecomeLeader(GroupMember agentMembershipInGroup) {
         if (agentMembershipInGroup.getPredisposition().getCanBecomeLeader()) {
-            logger.info(agent.getAID().getName() + ": Agent can become leader of group: " + request.getGroupId()
+            logger.info(myAgent.getAID().getName() + ": Agent can become leader of group: " + request.getGroupId()
                     + " It's score: " + agentMembershipInGroup.getPredisposition().getScore());
 
-            logger.info(agent.getAID().getName() + ": Sending proposals to other members... ");
+            logger.info(myAgent.getAID().getName() + ": Sending proposals to other members... ");
             myAgent.addBehaviour(new SendProposalsToAllGroupMembers(request.getGroupId()));
         }
     }
 
     private GroupMember registerAgentsMembership(Group newlyRegisteredGroup) {
-        return agent.getGroupMembershipRegistrar().registerAgent(request.getGroupId(),
-                newlyRegisteredGroup.getGroupLeaderRequirements(), agent.getAgentProperties());
+        return ((LeadershipChoiceAgent)myAgent).getGroupMembershipRegistrar().registerAgent(request.getGroupId(),
+                newlyRegisteredGroup.getGroupLeaderRequirements(),
+                ((LeadershipChoiceAgent)myAgent).getAgentProperties(),
+                myAgent.getAID());
     }
 
     private Group registerGroup() {
-        Group newlyRegisteredGroup = new Group(request.getGroupMembers(), request.getMandatoryFeatures(), request.getOptionalFeatures());
-        agent.getGroupRegistrar().registerGroup(request.getGroupId(), newlyRegisteredGroup);
+        Group newlyRegisteredGroup = new Group( request.getGroupMembers(),
+                                                request.getMandatoryFeatures(),
+                                                request.getOptionalFeatures());
+
+        ((LeadershipChoiceAgent)myAgent).getGroupRegistrar().registerGroup( request.getGroupId(),
+                                                                            newlyRegisteredGroup);
         return newlyRegisteredGroup;
     }
 
