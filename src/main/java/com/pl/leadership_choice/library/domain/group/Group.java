@@ -12,6 +12,8 @@ import java.util.Set;
  */
 public class Group {
 
+    private String leader = null;
+
     private Set<String> members;
 
     private LeaderRequirements groupLeaderRequirements;
@@ -20,6 +22,14 @@ public class Group {
     public Group(Set<String> members, Map<String, MandatoryLeaderParameter> groupLeadersMandatoryParameters, Map<String, OptionalLeaderParameter> groupLeadersOptionalParameters) {
         this.members = members;
         groupLeaderRequirements = new LeaderRequirements(groupLeadersMandatoryParameters, groupLeadersOptionalParameters);
+    }
+
+    public String getLeader() {
+        return leader;
+    }
+
+    public void setLeader(String leader) {
+        this.leader = leader;
     }
 
     public Set<String> getMembers() {

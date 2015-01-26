@@ -37,14 +37,13 @@ public class ReceiveProposalBehaviour extends CyclicBehaviour {
                 //FIXME: wysłać wiadomość REJECT??
             } else {
                 if (myAgent.canBecomeLeader(otherAgentsCandidacy.getGroupId())) {
-                    //TODO: if scores are equal, they both consider themselves leaders. (>=)
-
-                    if(myAgent.getCandidacy(otherAgentsCandidacy.getGroupId()).compareTo(otherAgentsCandidacy) == 1) {
+                    if (myAgent.getCandidacy(otherAgentsCandidacy.getGroupId()).compareTo(otherAgentsCandidacy) == 1) {
                         // i become leader
                     } else if (myAgent.getCandidacy(otherAgentsCandidacy.getGroupId()).compareTo(otherAgentsCandidacy) == -1) {
                         // he becomes leader
-                    } else if (myAgent.getCandidacy(otherAgentsCandidacy.getGroupId()).compareTo(otherAgentsCandidacy) == 0) {
-                        // we shuffle who becomes leader
+                    } else if (myAgent.getCandidacy(otherAgentsCandidacy.getGroupId()).compareTo(otherAgentsCandidacy) == 0
+                            && (!myAgent.getLeader(otherAgentsCandidacy.getGroupId()).equals(otherAgentsCandidacy.getPretenderId()))) {
+                        //we need to check whether he is not our leader already
                     }
                 } else {
                     // accept him as a leader
