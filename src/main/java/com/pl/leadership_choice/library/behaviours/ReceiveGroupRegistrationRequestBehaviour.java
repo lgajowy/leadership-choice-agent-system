@@ -14,18 +14,15 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by adam on 18.01.15.
  */
-public class ReceiveRequestBehaviour extends CyclicBehaviour {
+public class ReceiveGroupRegistrationRequestBehaviour extends CyclicBehaviour {
 
-    private Logger logger = LoggerFactory.getLogger(ReceiveRequestBehaviour.class);
+    private Logger logger = LoggerFactory.getLogger(ReceiveGroupRegistrationRequestBehaviour.class);
 
     private MessageTemplate requestMessageTemplate = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
 
     private ACLMessage message;
 
     private LeadershipChoiceRequest request;
-
-    //TODO: ten cast poniżej nie działa
-    private LeadershipChoiceAgent agent = (LeadershipChoiceAgent) this.myAgent;
 
     public void action() {
         logger.info(myAgent.getName() + " ReceiveRequestBehaviour START");
@@ -54,26 +51,23 @@ public class ReceiveRequestBehaviour extends CyclicBehaviour {
                     + " It's score: " + agentMembershipInGroup.getPredisposition().getScore());
 
             logger.info(myAgent.getAID().getName() + ": Sending proposals to other members... ");
-            myAgent.addBehaviour(new SendProposalsToAllGroupMembers(request.getGroupId()));
+            myAgent.addBehaviour(new SendProposalsToGroupMembers(request.getGroupId()));
         }
     }
 
     private GroupMember registerAgentsMembership(Group newlyRegisteredGroup) {
-        return ((LeadershipChoiceAgent)myAgent).getGroupMembershipRegistrar().registerAgent(request.getGroupId(),
+        return ((LeadershipChoiceAgent) myAgent).getGroupMembershipRegistrar().registerAgent(myAgent.getAID().getName(), request.getGroupId(),
                 newlyRegisteredGroup.getGroupLeaderRequirements(),
-                ((LeadershipChoiceAgent)myAgent).getAgentProperties(),
-                myAgent.getAID());
+                ((LeadershipChoiceAgent) myAgent).getAgentProperties());
     }
 
     private Group registerGroup() {
-        Group newlyRegisteredGroup = new Group( request.getGroupMembers(),
-                                                request.getMandatoryFeatures(),
-                                                request.getOptionalFeatures());
+        Group newlyRegisteredGroup = new Group(request.getGroupMembers(),
+                request.getMandatoryFeatures(),
+                request.getOptionalFeatures());
 
-        ((LeadershipChoiceAgent)myAgent).getGroupRegistrar().registerGroup( request.getGroupId(),
-                                                                            newlyRegisteredGroup);
+        ((LeadershipChoiceAgent) myAgent).getGroupRegistrar().registerGroup(request.getGroupId(),
+                newlyRegisteredGroup);
         return newlyRegisteredGroup;
     }
-
-
 }

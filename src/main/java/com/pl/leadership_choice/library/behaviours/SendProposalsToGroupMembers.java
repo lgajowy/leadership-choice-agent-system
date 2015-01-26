@@ -14,26 +14,23 @@ import java.util.Set;
 /**
  * Created by adam on 18.01.15.
  */
-public class SendProposalsToAllGroupMembers extends SimpleBehaviour {
+public class SendProposalsToGroupMembers extends SimpleBehaviour {
 
-    Logger logger = LoggerFactory.getLogger(SendProposalsToAllGroupMembers.class);
-
-    LeadershipChoiceAgent agent = (LeadershipChoiceAgent) this.myAgent;
+    Logger logger = LoggerFactory.getLogger(SendProposalsToGroupMembers.class);
 
     private ACLMessage msg;
 
     private String groupId = null;
 
-    public SendProposalsToAllGroupMembers(String groupId) {
+    public SendProposalsToGroupMembers(String groupId) {
         super();
         this.groupId = groupId;
     }
 
     public void action() {
-        Candidacy agentCandidacy = new Candidacy(myAgent.getAID().getName(),
-                groupId,
-                ((LeadershipChoiceAgent)myAgent).getGroupMembershipRegistrar().getGroupMemberships().get(groupId).getPredisposition().getScore(),
-                null);
+        Double candidateScore = ((LeadershipChoiceAgent) myAgent).getGroupMembershipRegistrar()
+                .getGroupMemberships().get(groupId).getPredisposition().getScore();
+        Candidacy agentCandidacy = new Candidacy(myAgent.getAID().getName(), groupId, candidateScore, null);
 
         msg = new ACLMessage(ACLMessage.PROPOSE);
         msg.setContent(JsonMapper.createJsonFromObject(agentCandidacy));
@@ -44,7 +41,7 @@ public class SendProposalsToAllGroupMembers extends SimpleBehaviour {
     }
 
     private void addMessageReceivers() {
-        Set<String> members = ((LeadershipChoiceAgent)myAgent).getGroupRegistrar().getMembersForGroupsId(groupId);
+        Set<String> members = ((LeadershipChoiceAgent) myAgent).getGroupRegistrar().getMembersForGroupsId(groupId);
         for (String s : members) {
             if (!s.equals(myAgent.getName()))
                 msg.addReceiver(new AID(s, AID.ISGUID));

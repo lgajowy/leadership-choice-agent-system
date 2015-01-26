@@ -24,11 +24,11 @@
  */
 package com.pl.leadership_choice.library;
 
+import com.pl.leadership_choice.library.domain.group.candidacy.Candidacy;
 import com.pl.leadership_choice.library.infrastructure.configuration.FromJsonFileAgentConfigurer;
-import com.pl.leadership_choice.library.behaviours.ReceiveRequestBehaviour;
+import com.pl.leadership_choice.library.behaviours.ReceiveGroupRegistrationRequestBehaviour;
 import com.pl.leadership_choice.library.domain.group.GroupRegistrar;
 import com.pl.leadership_choice.library.domain.group.member.GroupMembershipRegistrar;
-import jade.core.AID;
 import jade.core.Agent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,13 +42,19 @@ public class LeadershipChoiceAgent extends Agent {
 
     private Map agentProperties = new HashMap();
 
-
     private GroupRegistrar groupRegistrar = new GroupRegistrar();
     private GroupMembershipRegistrar groupMembershipRegistrar = new GroupMembershipRegistrar();
 
 
+    public Candidacy getCandidacy(String groupId) {
+        return groupMembershipRegistrar.getGroupMemberships().get(groupId).getMemberCandidacy();
+    }
 
-    public boolean canAgentBecomeLeader(String groupId) {
+    public boolean alreadyHasALeader(String groupId) {
+        return this.groupMembershipRegistrar.getGroupMemberships().get(groupId) != null;
+    }
+
+    public boolean canBecomeLeader(String groupId) {
         return groupMembershipRegistrar.getGroupMemberships().get(groupId).getPredisposition().getCanBecomeLeader();
     }
 
@@ -61,7 +67,7 @@ public class LeadershipChoiceAgent extends Agent {
 
         readAgentProperties(String.valueOf(getArguments()[0]));
 
-        this.addBehaviour(new ReceiveRequestBehaviour());
+        this.addBehaviour(new ReceiveGroupRegistrationRequestBehaviour());
 
         //doDelete();
     }

@@ -1,5 +1,6 @@
 package com.pl.leadership_choice.library.domain.group.member;
 
+import com.pl.leadership_choice.library.domain.group.candidacy.Candidacy;
 import jade.core.AID;
 
 /**
@@ -11,12 +12,13 @@ public class GroupMember {
 
     private Predisposition predisposition;
 
-    private AID currentLeaderAID;
+    private AID currentLeaderAID = null;
 
-    public GroupMember(String id, Predisposition predisposition, AID currentLeaderAID) {
+    private Candidacy memberCandidacy = null;
+
+    public GroupMember(String id, Predisposition predisposition) {
         this.id = id;
         this.predisposition = predisposition;
-        this.currentLeaderAID = currentLeaderAID;
     }
 
     public String getId() {
@@ -36,12 +38,18 @@ public class GroupMember {
     }
 
     public AID getCurrentLeaderAID() {
-        return this.currentLeaderAID;
+        return currentLeaderAID;
     }
 
     public void setCurrentLeaderAID(AID currentLeaderAID) {
         this.currentLeaderAID = currentLeaderAID;
     }
 
+    public Candidacy getMemberCandidacy() {
+        return memberCandidacy;
+    }
 
+    public void setMemberCandidacy(Candidacy memberCandidacy) {
+        this.memberCandidacy = memberCandidacy;
+    }
 }
