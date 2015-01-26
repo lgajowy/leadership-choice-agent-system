@@ -46,8 +46,12 @@ public class LeadershipChoiceAgent extends Agent {
     private GroupMembershipRegistrar groupMembershipRegistrar = new GroupMembershipRegistrar();
 
 
-    public String getLeader(String groupId) {
+    public Candidacy getLeader(String groupId) {
         return groupRegistrar.getGroups().get(groupId).getLeader();
+    }
+
+    public void setLeader(Candidacy leader) {
+        groupRegistrar.getGroups().get(leader.getGroupId()).setLeader(leader);
     }
 
     public Candidacy getCandidacy(String groupId) {

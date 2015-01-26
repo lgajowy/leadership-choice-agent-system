@@ -38,7 +38,7 @@ public class ReceiveProposalBehaviour extends CyclicBehaviour {
             } else {
                 if (myAgent.canBecomeLeader(otherAgentsCandidacy.getGroupId())) {
                     if (myAgent.getCandidacy(otherAgentsCandidacy.getGroupId()).compareTo(otherAgentsCandidacy) == 1) {
-                        // i become leader
+                        myAgent.addBehaviour(new BecomingALeaderBehaviour(otherAgentsCandidacy));
                     } else if (myAgent.getCandidacy(otherAgentsCandidacy.getGroupId()).compareTo(otherAgentsCandidacy) == -1) {
                         // he becomes leader
                     } else if (myAgent.getCandidacy(otherAgentsCandidacy.getGroupId()).compareTo(otherAgentsCandidacy) == 0

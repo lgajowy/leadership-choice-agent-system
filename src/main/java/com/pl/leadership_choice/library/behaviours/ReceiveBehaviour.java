@@ -31,8 +31,4 @@ public class ReceiveBehaviour extends CyclicBehaviour {
         }
     }
 
-    private boolean canIBeLeader()
-    {
-        return true;
-    }
 }

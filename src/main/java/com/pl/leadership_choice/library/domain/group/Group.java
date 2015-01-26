@@ -1,5 +1,6 @@
 package com.pl.leadership_choice.library.domain.group;
 
+import com.pl.leadership_choice.library.domain.group.candidacy.Candidacy;
 import com.pl.leadership_choice.library.domain.group.leader.OptionalLeaderParameter;
 import com.pl.leadership_choice.library.domain.group.leader.MandatoryLeaderParameter;
 import com.pl.leadership_choice.library.domain.group.leader.LeaderRequirements;
@@ -12,7 +13,7 @@ import java.util.Set;
  */
 public class Group {
 
-    private String leader = null;
+    private Candidacy leader = null;
 
     private Set<String> members;
 
@@ -24,11 +25,11 @@ public class Group {
         groupLeaderRequirements = new LeaderRequirements(groupLeadersMandatoryParameters, groupLeadersOptionalParameters);
     }
 
-    public String getLeader() {
+    public Candidacy getLeader() {
         return leader;
     }
 
-    public void setLeader(String leader) {
+    public void setLeader(Candidacy leader) {
         this.leader = leader;
     }
 

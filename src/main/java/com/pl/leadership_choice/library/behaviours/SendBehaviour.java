@@ -20,7 +20,7 @@ public class SendBehaviour extends SimpleBehaviour {
     {
         msg = new ACLMessage(ACLMessage.INFORM);
 
-        msg.setContent("TREŚĆ WIADOMOŚCI: DUPA");
+        msg.setContent("TREŚĆ WIADOMOŚCI: xxx");
         msg.addReceiver(new AID("leadershipChoiceAgent1@Y580:1099/JADE", AID.ISLOCALNAME));
         //logger.info(msg.getContent());
         myAgent.send(msg);

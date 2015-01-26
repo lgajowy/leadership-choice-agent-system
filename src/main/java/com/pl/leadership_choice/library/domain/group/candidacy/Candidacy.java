@@ -1,6 +1,7 @@
 package com.pl.leadership_choice.library.domain.group.candidacy;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Sets;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -61,6 +62,7 @@ public class Candidacy implements Comparable<Candidacy> {
         this.pretenderSubordinates = pretenderSubordinates;
     }
 
+
     @Override
     public int compareTo(Candidacy other) {
         if(!this.getGroupId().equals(other.getGroupId())) {
@@ -73,5 +75,12 @@ public class Candidacy implements Comparable<Candidacy> {
             return -1;
         else
             return 0;
+    }
+
+    public void addNewSubordinates(Set<String> newSubordinates) {
+        if (newSubordinates != null) {
+            Sets.SetView<String> union = Sets.union(pretenderSubordinates, newSubordinates);
+            pretenderSubordinates = union.immutableCopy();
+        }
     }
 }
