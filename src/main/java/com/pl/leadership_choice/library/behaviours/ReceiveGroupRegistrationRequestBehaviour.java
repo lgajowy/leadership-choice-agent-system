@@ -25,7 +25,7 @@ public class ReceiveGroupRegistrationRequestBehaviour extends CyclicBehaviour {
     private LeadershipChoiceRequest request;
 
     public void action() {
-        logger.info(myAgent.getName() + " ReceiveRequestBehaviour START");
+        logger.info(this.getClass().getName() + " START");
 
         message = myAgent.receive(requestMessageTemplate);
         if (message == null) {

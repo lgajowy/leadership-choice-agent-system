@@ -38,6 +38,7 @@ public class SendProposalsToGroupMembers extends SimpleBehaviour {
 
         logger.info(myAgent.getAID().getName() + ": Sending proposal message to all members..." + msg.getContent());
         myAgent.send(msg);
+        myAgent.addBehaviour(new ReceiveProposalResponseBehaviour());
     }
 
     private void addMessageReceivers() {

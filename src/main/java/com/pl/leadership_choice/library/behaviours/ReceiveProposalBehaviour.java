@@ -3,6 +3,7 @@ package com.pl.leadership_choice.library.behaviours;
 import com.pl.leadership_choice.library.LeadershipChoiceAgent;
 import com.pl.leadership_choice.library.domain.group.candidacy.Candidacy;
 import com.pl.leadership_choice.library.infrastructure.JsonMapper;
+import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -23,7 +24,7 @@ public class ReceiveProposalBehaviour extends CyclicBehaviour {
         LeadershipChoiceAgent myAgent = (LeadershipChoiceAgent) this.myAgent;
 
         agentName = myAgent.getAID().getName();
-        logger.debug(agentName + ": " + this.getClass().getName() + "STARTED");
+        logger.debug(this.getClass().getName() + " STARTED");
 
         msg = myAgent.receive(mt);
         if (msg == null) {
@@ -35,18 +36,25 @@ public class ReceiveProposalBehaviour extends CyclicBehaviour {
             if (myAgent.alreadyHasALeader(otherAgentsCandidacy.getGroupId())) {
                 logger.info(agentName + ": already has leader. Declines: , " + otherAgentsCandidacy.getPretenderId());
                 //FIXME: wysłać wiadomość REJECT??
+                myAgent.addBehaviour(new RejectProposalBehaviour(otherAgentsCandidacy));
             } else {
                 if (myAgent.canBecomeLeader(otherAgentsCandidacy.getGroupId())) {
                     if (myAgent.getCandidacy(otherAgentsCandidacy.getGroupId()).compareTo(otherAgentsCandidacy) == 1) {
                         myAgent.addBehaviour(new BecomingALeaderBehaviour(otherAgentsCandidacy));
                     } else if (myAgent.getCandidacy(otherAgentsCandidacy.getGroupId()).compareTo(otherAgentsCandidacy) == -1) {
                         // he becomes leader
+                        myAgent.addBehaviour(new AcceptProposalBehaviour(otherAgentsCandidacy));
+                        //TODO: AL: rozeslij info do swoich ziomkow, ze maja nowego lidera
+                        myAgent.addBehaviour(new AcceptingALeaderBehaviour());
                     } else if (myAgent.getCandidacy(otherAgentsCandidacy.getGroupId()).compareTo(otherAgentsCandidacy) == 0
                             && (!myAgent.getLeader(otherAgentsCandidacy.getGroupId()).equals(otherAgentsCandidacy.getPretenderId()))) {
                         //we need to check whether he is not our leader already
                     }
                 } else {
                     // accept him as a leader
+                    myAgent.addBehaviour(new AcceptProposalBehaviour(otherAgentsCandidacy));
+                    myAgent.addBehaviour(new AcceptingALeaderBehaviour());
+                    //TODO: AL: rozeslij info do swoich ziomkow, ze maja nowego lidera
                 }
             }
         }

@@ -26,6 +26,9 @@ public class BecomingALeaderBehaviour extends OneShotBehaviour {
 
     @Override
     public void action() {
+
+        logger.info(this.getClass().getName() + " START");
+
         LeadershipChoiceAgent myAgent = (LeadershipChoiceAgent) this.myAgent;
         leaderCandidacy = myAgent.getCandidacy(newSubordinateCandidacy.getGroupId());
 
