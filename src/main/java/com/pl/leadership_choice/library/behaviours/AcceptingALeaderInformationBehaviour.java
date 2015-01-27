@@ -12,9 +12,9 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by lukasz on 26.01.15.
  */
-public class AcceptingALeaderBehaviour extends CyclicBehaviour {
+public class AcceptingALeaderInformationBehaviour extends CyclicBehaviour {
 
-    private Logger logger = LoggerFactory.getLogger(AcceptingALeaderBehaviour.class);
+    private Logger logger = LoggerFactory.getLogger(AcceptingALeaderInformationBehaviour.class);
 
     private MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
 
@@ -22,16 +22,21 @@ public class AcceptingALeaderBehaviour extends CyclicBehaviour {
 
     @Override
     public void action() {
-        LeadershipChoiceAgent myAgent = (LeadershipChoiceAgent) this.myAgent;
-
         message = myAgent.receive(mt);
         if (message == null) {
             block();
         } else {
-            Candidacy newLeaderData = (Candidacy) JsonMapper.mapJsonStringToObject(message.getContent(), Candidacy.class);
-            myAgent.setLeader(newLeaderData);
+            logger.info("Setting new leader.");
+            setNewLeader();
 
+            logger.info("Informing my subordinates about our new leader.");
             //todo: tell my subordinates that we have new leader.
         }
+    }
+
+    private void setNewLeader() {
+        LeadershipChoiceAgent myAgent = (LeadershipChoiceAgent) this.myAgent;
+        Candidacy newLeaderData = (Candidacy) JsonMapper.mapJsonStringToObject(message.getContent(), Candidacy.class);
+        myAgent.setLeader(newLeaderData);
     }
 }

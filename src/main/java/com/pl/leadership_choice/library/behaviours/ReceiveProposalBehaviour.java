@@ -37,13 +37,16 @@ public class ReceiveProposalBehaviour extends CyclicBehaviour {
                 //FIXME: wysłać wiadomość REJECT??
             } else {
                 if (myAgent.canBecomeLeader(otherAgentsCandidacy.getGroupId())) {
-                    if (myAgent.getCandidacy(otherAgentsCandidacy.getGroupId()).compareTo(otherAgentsCandidacy) == 1) {
-                        myAgent.addBehaviour(new BecomingALeaderBehaviour(otherAgentsCandidacy));
-                    } else if (myAgent.getCandidacy(otherAgentsCandidacy.getGroupId()).compareTo(otherAgentsCandidacy) == -1) {
-                        // he becomes leader
-                    } else if (myAgent.getCandidacy(otherAgentsCandidacy.getGroupId()).compareTo(otherAgentsCandidacy) == 0
-                            && (!myAgent.getLeader(otherAgentsCandidacy.getGroupId()).equals(otherAgentsCandidacy.getPretenderId()))) {
-                        //we need to check whether he is not our leader already
+                    Candidacy myAgentCandidacy = myAgent.getCandidacy(otherAgentsCandidacy.getGroupId());
+
+                    if (myAgentCandidacy.compareTo(otherAgentsCandidacy) == 1) {
+                        myAgent.addBehaviour(new NewLeaderChoiceBehaviour(myAgentCandidacy, otherAgentsCandidacy));
+                    } else if (myAgentCandidacy.compareTo(otherAgentsCandidacy) == 0) {
+                        if (!myAgent.getLeader(otherAgentsCandidacy.getGroupId()).getPretenderId().equals(otherAgentsCandidacy.getPretenderId())) {
+                            myAgent.addBehaviour(new NewLeaderChoiceBehaviour(myAgentCandidacy, otherAgentsCandidacy));
+                        }
+                    } else if (myAgentCandidacy.compareTo(otherAgentsCandidacy) == -1) {
+                        myAgent.addBehaviour(new NewLeaderChoiceBehaviour(otherAgentsCandidacy, myAgentCandidacy));
                     }
                 } else {
                     // accept him as a leader
