@@ -35,7 +35,6 @@ public class ReceiveProposalBehaviour extends CyclicBehaviour {
 
             if (myAgent.alreadyHasALeader(otherAgentsCandidacy.getGroupId())) {
                 logger.info(agentName + ": already has leader. Declines: , " + otherAgentsCandidacy.getPretenderId());
-                //FIXME: wysłać wiadomość REJECT??
                 myAgent.addBehaviour(new RejectProposalBehaviour(otherAgentsCandidacy));
             } else {
                 if (myAgent.canBecomeLeader(otherAgentsCandidacy.getGroupId())) {
@@ -44,7 +43,6 @@ public class ReceiveProposalBehaviour extends CyclicBehaviour {
                     } else if (myAgent.getCandidacy(otherAgentsCandidacy.getGroupId()).compareTo(otherAgentsCandidacy) == -1) {
                         // he becomes leader
                         myAgent.addBehaviour(new AcceptProposalBehaviour(otherAgentsCandidacy));
-                        //TODO: AL: rozeslij info do swoich ziomkow, ze maja nowego lidera
                         myAgent.addBehaviour(new AcceptingALeaderBehaviour());
                     } else if (myAgent.getCandidacy(otherAgentsCandidacy.getGroupId()).compareTo(otherAgentsCandidacy) == 0
                             && (!myAgent.getLeader(otherAgentsCandidacy.getGroupId()).equals(otherAgentsCandidacy.getPretenderId()))) {
@@ -54,7 +52,7 @@ public class ReceiveProposalBehaviour extends CyclicBehaviour {
                     // accept him as a leader
                     myAgent.addBehaviour(new AcceptProposalBehaviour(otherAgentsCandidacy));
                     myAgent.addBehaviour(new AcceptingALeaderBehaviour());
-                    //TODO: AL: rozeslij info do swoich ziomkow, ze maja nowego lidera
+
                 }
             }
         }
