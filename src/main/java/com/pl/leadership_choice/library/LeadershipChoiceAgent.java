@@ -24,6 +24,8 @@
  */
 package com.pl.leadership_choice.library;
 
+import com.pl.leadership_choice.library.behaviours.AcceptingALeaderInformationBehaviour;
+import com.pl.leadership_choice.library.behaviours.ReceivingLeaderAgreementsBehaviour;
 import com.pl.leadership_choice.library.domain.group.candidacy.Candidacy;
 import com.pl.leadership_choice.library.infrastructure.configuration.FromJsonFileAgentConfigurer;
 import com.pl.leadership_choice.library.behaviours.ReceiveGroupRegistrationRequestBehaviour;
@@ -76,6 +78,8 @@ public class LeadershipChoiceAgent extends Agent {
         readAgentProperties(String.valueOf(getArguments()[0]));
 
         this.addBehaviour(new ReceiveGroupRegistrationRequestBehaviour());
+        this.addBehaviour(new AcceptingALeaderInformationBehaviour());
+        this.addBehaviour(new ReceivingLeaderAgreementsBehaviour());
 
         //doDelete();
     }
