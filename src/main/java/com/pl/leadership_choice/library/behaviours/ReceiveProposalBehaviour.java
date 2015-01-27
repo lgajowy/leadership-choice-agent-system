@@ -33,11 +33,9 @@ public class ReceiveProposalBehaviour extends CyclicBehaviour {
             Candidacy otherAgentsCandidacy = (Candidacy) JsonMapper.mapJsonStringToObject(msg.getContent(), Candidacy.class);
 
             if (myAgent.alreadyHasALeader(otherAgentsCandidacy.getGroupId())) {
-                //FIXME: I already have a leader (null) - WTF?
                 logger.info("I already have leader("
-                                + myAgent.getLeader(otherAgentsCandidacy.getGroupId())//.getPretenderId()
-                                + "). Declines: , "
-                                + otherAgentsCandidacy.getPretenderId()
+                                + myAgent.getLeader(otherAgentsCandidacy.getGroupId())
+                                + "). Declines: , " + otherAgentsCandidacy.getPretenderId()
                 );
                 myAgent.addBehaviour(new RejectProposalBehaviour(otherAgentsCandidacy));
             } else {
