@@ -28,7 +28,7 @@ public class AcceptingALeaderBehaviour extends CyclicBehaviour {
     public void action() {
         LeadershipChoiceAgent myAgent = (LeadershipChoiceAgent) this.myAgent;
 
-        logger.info(this.getClass().getName() + " START");
+        logger.info(this.getClass().getSimpleName() + " START");
 
         message = myAgent.receive(mt);
         if (message == null) {
@@ -36,8 +36,10 @@ public class AcceptingALeaderBehaviour extends CyclicBehaviour {
         } else {
             Candidacy newLeaderData = (Candidacy) JsonMapper.mapJsonStringToObject(message.getContent(), Candidacy.class);
             myAgent.setLeader(newLeaderData);
+            logger.info("My new leader is " + myAgent.getLeader(newLeaderData.getGroupId()).getPretenderId());
 
             Set<String> subordinates = myAgent.getCandidacy(newLeaderData.getGroupId()).getPretenderSubordinates();
+
             //tell my subordinates that we have new leader.
             ACLMessage newMsg = new ACLMessage(ACLMessage.INFORM);
 
@@ -46,6 +48,9 @@ public class AcceptingALeaderBehaviour extends CyclicBehaviour {
             }
             newMsg.setContent(message.getContent());
             myAgent.send(newMsg);
+
+            //send list of my subordinates to my new leader
+
         }
     }
 }

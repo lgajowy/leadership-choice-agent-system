@@ -50,7 +50,7 @@ public class ReceiveGroupRegistrationRequestBehaviour extends CyclicBehaviour {
             logger.info(myAgent.getAID().getName() + ": Agent can become leader of group: " + request.getGroupId()
                     + " It's score: " + agentMembershipInGroup.getPredisposition().getScore());
 
-            logger.info(myAgent.getAID().getName() + ": Sending proposals to other members... ");
+            //logger.info(myAgent.getAID().getName() + ": Sending proposals to other members... ");
             myAgent.addBehaviour(new SendProposalsToGroupMembers(request.getGroupId()));
         }
     }

@@ -33,24 +33,39 @@ public class ReceiveProposalBehaviour extends CyclicBehaviour {
             logger.info(agentName + ": PROPOSAL message received: " + msg.getContent() + " from: " + msg.getSender().getName());
             Candidacy otherAgentsCandidacy = (Candidacy) JsonMapper.mapJsonStringToObject(msg.getContent(), Candidacy.class);
 
-            if (myAgent.alreadyHasALeader(otherAgentsCandidacy.getGroupId())) {
-                logger.info(agentName + ": already has leader. Declines: , " + otherAgentsCandidacy.getPretenderId());
+            if (myAgent.alreadyHasALeader(otherAgentsCandidacy.getGroupId()))
+            {
+                //FIXME: I already have a leader (null) - WTF?
+                logger.info("I already have leader("
+                        + myAgent.getLeader(otherAgentsCandidacy.getGroupId())//.getPretenderId()
+                        + "). Declines: , "
+                        + otherAgentsCandidacy.getPretenderId()
+                );
+
                 myAgent.addBehaviour(new RejectProposalBehaviour(otherAgentsCandidacy));
-            } else {
-                if (myAgent.canBecomeLeader(otherAgentsCandidacy.getGroupId())) {
-                    if (myAgent.getCandidacy(otherAgentsCandidacy.getGroupId()).compareTo(otherAgentsCandidacy) == 1) {
+            }
+            else
+            {
+                if (myAgent.canBecomeLeader(otherAgentsCandidacy.getGroupId()))
+                {
+                    if (myAgent.getCandidacy(otherAgentsCandidacy.getGroupId()).compareTo(otherAgentsCandidacy) == 1)
+                    {
                         myAgent.addBehaviour(new BecomingALeaderBehaviour(otherAgentsCandidacy));
-                    } else if (myAgent.getCandidacy(otherAgentsCandidacy.getGroupId()).compareTo(otherAgentsCandidacy) == -1) {
+                    }
+                    else if (myAgent.getCandidacy(otherAgentsCandidacy.getGroupId()).compareTo(otherAgentsCandidacy) == -1)
+                    {
                         // he becomes leader
-                        myAgent.addBehaviour(new AcceptProposalBehaviour(otherAgentsCandidacy));
+                        //myAgent.addBehaviour(new AcceptProposalBehaviour(otherAgentsCandidacy));
                         myAgent.addBehaviour(new AcceptingALeaderBehaviour());
-                    } else if (myAgent.getCandidacy(otherAgentsCandidacy.getGroupId()).compareTo(otherAgentsCandidacy) == 0
-                            && (!myAgent.getLeader(otherAgentsCandidacy.getGroupId()).equals(otherAgentsCandidacy.getPretenderId()))) {
+                    }
+                    else if (myAgent.getCandidacy(otherAgentsCandidacy.getGroupId()).compareTo(otherAgentsCandidacy) == 0
+                            && (!myAgent.getLeader(otherAgentsCandidacy.getGroupId()).equals(otherAgentsCandidacy.getPretenderId())))
+                    {
                         //we need to check whether he is not our leader already
                     }
                 } else {
                     // accept him as a leader
-                    myAgent.addBehaviour(new AcceptProposalBehaviour(otherAgentsCandidacy));
+                    //myAgent.addBehaviour(new AcceptProposalBehaviour(otherAgentsCandidacy));
                     myAgent.addBehaviour(new AcceptingALeaderBehaviour());
 
                 }

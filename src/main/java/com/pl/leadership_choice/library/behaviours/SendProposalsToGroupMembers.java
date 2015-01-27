@@ -44,8 +44,10 @@ public class SendProposalsToGroupMembers extends SimpleBehaviour {
     private void addMessageReceivers() {
         Set<String> members = ((LeadershipChoiceAgent) myAgent).getGroupRegistrar().getMembersForGroupsId(groupId);
         for (String s : members) {
-            if (!s.equals(myAgent.getName()))
+            if (!s.equals(myAgent.getName())) {
+                logger.info("my name: "+myAgent.getName()+", his name: " + s);
                 msg.addReceiver(new AID(s, AID.ISGUID));
+            }
         }
     }
 
