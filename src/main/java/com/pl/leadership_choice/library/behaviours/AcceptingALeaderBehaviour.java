@@ -23,7 +23,6 @@ public class AcceptingALeaderBehaviour extends CyclicBehaviour {
 
     private ACLMessage message;
 
-
     @Override
     public void action() {
         LeadershipChoiceAgent myAgent = (LeadershipChoiceAgent) this.myAgent;

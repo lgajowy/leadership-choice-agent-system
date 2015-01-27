@@ -1,10 +1,10 @@
 package com.pl.leadership_choice.library.behaviours;
 
 import com.pl.leadership_choice.library.LeadershipChoiceAgent;
-import com.pl.leadership_choice.library.domain.group.Group;
-import com.pl.leadership_choice.library.domain.group.member.GroupMember;
-import com.pl.leadership_choice.library.infrastructure.json.JsonMapper;
 import com.pl.leadership_choice.library.behaviours.messages.LeadershipChoiceRequest;
+import com.pl.leadership_choice.library.domain.group.Group;
+import com.pl.leadership_choice.library.domain.group.member.GroupMembership;
+import com.pl.leadership_choice.library.infrastructure.json.JsonMapper;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -31,31 +31,49 @@ public class ReceiveGroupRegistrationRequestBehaviour extends CyclicBehaviour {
         if (message == null) {
             block();
         } else {
-            logger.info(myAgent.getAID().getName() + ": Received REQUEST: " + message.getContent() + ". From : " + message.getSender().getName());
+            logger.info("Received REQUEST: " + message.getContent() + ". From : " + message.getSender().getName());
             request = (LeadershipChoiceRequest) JsonMapper.mapJsonStringToObject(message.getContent(), LeadershipChoiceRequest.class);
 
-            Group newlyRegisteredGroup = registerGroup();
-            logger.info(myAgent.getAID().getName() + ": Registered new group with id: " + request.getGroupId());
-            GroupMember agentMembershipInGroup = registerAgentsMembership(newlyRegisteredGroup);
-            logger.debug(myAgent.getAID().getName() + ": Registered the agent as a member of the group: " + request.getGroupId());
-
-            sendProposalsIfAgentCanBecomeLeader(agentMembershipInGroup);
-            myAgent.addBehaviour(new ReceiveProposalBehaviour());
-
+            GroupMembership agentMembershipInGroup = registerNewGroup();
+            if (isAgentTheOnlyGroupMember()) {
+                logger.info("Agent is the only member of the group: " + request.getGroupId());
+                setAsLeaderIfHeCanBeOne(agentMembershipInGroup);
+            } else {
+                sendProposalsIfAgentCanBecomeLeader(agentMembershipInGroup);
+                myAgent.addBehaviour(new ReceiveProposalBehaviour());
+            }
         }
     }
 
-    private void sendProposalsIfAgentCanBecomeLeader(GroupMember agentMembershipInGroup) {
+    private boolean isAgentTheOnlyGroupMember() {
+        return request.getGroupMembers().size() == 1 && request.getGroupMembers().contains(myAgent.getName());
+    }
+
+    private void setAsLeaderIfHeCanBeOne(GroupMembership agentMembershipInGroup) {
+        LeadershipChoiceAgent myAgent = (LeadershipChoiceAgent) this.myAgent;
+        if (myAgent.canBecomeLeader(request.getGroupId())) {
+            logger.info("Setting agent as the leader of one-agent group.");
+            myAgent.setLeader(agentMembershipInGroup.getMemberCandidacy());
+        }
+    }
+
+    private GroupMembership registerNewGroup() {
+        Group newlyRegisteredGroup = registerGroup();
+        logger.info(myAgent.getAID().getName() + ": Registered new group with id: " + request.getGroupId());
+        GroupMembership agentMembershipInGroup = registerAgentsMembership(newlyRegisteredGroup);
+        logger.debug(myAgent.getAID().getName() + ": Registered the agent as a member of the group: " + request.getGroupId());
+        return agentMembershipInGroup;
+    }
+
+    private void sendProposalsIfAgentCanBecomeLeader(GroupMembership agentMembershipInGroup) {
         if (agentMembershipInGroup.getPredisposition().getCanBecomeLeader()) {
             logger.info(myAgent.getAID().getName() + ": Agent can become leader of group: " + request.getGroupId()
                     + " It's score: " + agentMembershipInGroup.getPredisposition().getScore());
-
-            //logger.info(myAgent.getAID().getName() + ": Sending proposals to other members... ");
             myAgent.addBehaviour(new SendProposalsToGroupMembers(request.getGroupId()));
         }
     }
 
-    private GroupMember registerAgentsMembership(Group newlyRegisteredGroup) {
+    private GroupMembership registerAgentsMembership(Group newlyRegisteredGroup) {
         return ((LeadershipChoiceAgent) myAgent).getGroupMembershipRegistrar().registerAgent(myAgent.getAID().getName(), request.getGroupId(),
                 newlyRegisteredGroup.getGroupLeaderRequirements(),
                 ((LeadershipChoiceAgent) myAgent).getAgentProperties());

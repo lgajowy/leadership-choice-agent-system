@@ -6,7 +6,7 @@ import jade.core.AID;
 /**
  * Created by lukasz on 25.01.15.
  */
-public class GroupMember {
+public class GroupMembership {
 
     private String id;
 
@@ -16,7 +16,7 @@ public class GroupMember {
 
     private Candidacy memberCandidacy = null;
 
-    public GroupMember(String id, Predisposition predisposition) {
+    public GroupMembership(String id, Predisposition predisposition) {
         this.id = id;
         this.predisposition = predisposition;
     }

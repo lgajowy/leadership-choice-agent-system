@@ -12,17 +12,17 @@ import java.util.Map;
  */
 public class GroupMembershipRegistrar {
 
-    private Map<String, GroupMember> groupMemberships = new HashMap<>();
+    private Map<String, GroupMembership> groupMemberships = new HashMap<>();
 
-    public GroupMember registerAgent(String agentId, String groupId, LeaderRequirements leaderRequirements, Map agentProperties) {
+    public GroupMembership registerAgent(String agentId, String groupId, LeaderRequirements leaderRequirements, Map agentProperties) {
         Predisposition registeredAgentsPredisposition = calculatePredisposition(leaderRequirements, agentProperties);
 
-        GroupMember groupMember = new GroupMember(agentId, registeredAgentsPredisposition);
+        GroupMembership groupMembership = new GroupMembership(agentId, registeredAgentsPredisposition);
         if (registeredAgentsPredisposition.getCanBecomeLeader()) {
-            groupMember.setMemberCandidacy(prepareCandidacy(agentId, groupId, registeredAgentsPredisposition.getScore()));
+            groupMembership.setMemberCandidacy(prepareCandidacy(agentId, groupId, registeredAgentsPredisposition.getScore()));
         }
-        groupMemberships.put(groupId, groupMember);
-        return groupMember;
+        groupMemberships.put(groupId, groupMembership);
+        return groupMembership;
     }
 
     public Candidacy prepareCandidacy(String agentId, String groupId, Double candidateScore) {
@@ -36,7 +36,7 @@ public class GroupMembershipRegistrar {
         return calculator.calculatePredisposition(agentProperties);
     }
 
-    public Map<String, GroupMember> getGroupMemberships() {
+    public Map<String, GroupMembership> getGroupMemberships() {
         return groupMemberships;
     }
 }
