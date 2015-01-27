@@ -2,8 +2,7 @@ package com.pl.leadership_choice.library.domain.group.member;
 
 import com.pl.leadership_choice.library.domain.group.candidacy.Candidacy;
 import com.pl.leadership_choice.library.domain.group.leader.LeaderRequirements;
-import com.pl.leadership_choice.library.infrastructure.calculator.PredispositionCalculator;
-import jade.core.AID;
+import com.pl.leadership_choice.library.domain.calculator.PredispositionCalculator;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -48,6 +48,18 @@ public class LeadershipChoiceAgent extends Agent {
     private GroupMembershipRegistrar groupMembershipRegistrar = new GroupMembershipRegistrar();
 
 
+    protected void setup() {
+        logger.info(getAID().getName() + ": Agent has started.");
+
+        readAgentProperties(String.valueOf(getArguments()[0]));
+
+        this.addBehaviour(new ReceiveGroupRegistrationRequestBehaviour());
+        this.addBehaviour(new AcceptingALeaderBehaviour());
+        this.addBehaviour(new ReceivingLeaderAgreementsBehaviour());
+
+        //doDelete();
+    }
+
     public Candidacy getLeader(String groupId) {
         return groupRegistrar.getGroups().get(groupId).getLeader();
     }
@@ -70,18 +82,6 @@ public class LeadershipChoiceAgent extends Agent {
 
     private void readAgentProperties(String propertiesFilePath) {
         agentProperties = new FromJsonFileAgentConfigurer(new File(propertiesFilePath)).configureAgent();
-    }
-
-    protected void setup() {
-        logger.info(getAID().getName() + ": Agent has started.");
-
-        readAgentProperties(String.valueOf(getArguments()[0]));
-
-        this.addBehaviour(new ReceiveGroupRegistrationRequestBehaviour());
-        this.addBehaviour(new AcceptingALeaderBehaviour());
-        this.addBehaviour(new ReceivingLeaderAgreementsBehaviour());
-
-        //doDelete();
     }
 
     public GroupRegistrar getGroupRegistrar() {

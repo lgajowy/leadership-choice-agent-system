@@ -1,6 +1,7 @@
 package com.pl.leadership_choice.library.infrastructure;
 
 import com.pl.leadership_choice.library.domain.group.candidacy.Candidacy;
+import com.pl.leadership_choice.library.infrastructure.json.JsonMapper;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

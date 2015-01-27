@@ -3,8 +3,8 @@ package com.pl.leadership_choice.library.behaviours;
 import com.pl.leadership_choice.library.LeadershipChoiceAgent;
 import com.pl.leadership_choice.library.domain.group.Group;
 import com.pl.leadership_choice.library.domain.group.member.GroupMember;
-import com.pl.leadership_choice.library.infrastructure.leader_choice_request.LeadershipChoiceRequest;
-import com.pl.leadership_choice.library.infrastructure.leader_choice_request.LeadershipChoiceRequestMapper;
+import com.pl.leadership_choice.library.infrastructure.json.JsonMapper;
+import com.pl.leadership_choice.library.behaviours.messages.LeadershipChoiceRequest;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -32,7 +32,7 @@ public class ReceiveGroupRegistrationRequestBehaviour extends CyclicBehaviour {
             block();
         } else {
             logger.info(myAgent.getAID().getName() + ": Received REQUEST: " + message.getContent() + ". From : " + message.getSender().getName());
-            request = new LeadershipChoiceRequestMapper(message.getContent()).mapRequest();
+            request = (LeadershipChoiceRequest) JsonMapper.mapJsonStringToObject(message.getContent(), LeadershipChoiceRequest.class);
 
             Group newlyRegisteredGroup = registerGroup();
             logger.info(myAgent.getAID().getName() + ": Registered new group with id: " + request.getGroupId());

@@ -1,4 +1,4 @@
-package com.pl.leadership_choice.library.infrastructure.leader_choice_request;
+package com.pl.leadership_choice.library.behaviours.messages;
 
 import com.pl.leadership_choice.library.domain.group.leader.MandatoryLeaderParameter;
 import com.pl.leadership_choice.library.domain.group.leader.OptionalLeaderParameter;

@@ -1,8 +1,8 @@
-package com.pl.leadership_choice.library.infrastructure.calculator;
+package com.pl.leadership_choice.library.domain.calculator;
 
 import com.pl.leadership_choice.library.domain.group.leader.MandatoryLeaderParameter;
 import com.pl.leadership_choice.library.domain.group.leader.OptionalLeaderParameter;
-import com.pl.leadership_choice.library.infrastructure.leader_choice_request.exception.UnrecognizedRelationException;
+import com.pl.leadership_choice.library.infrastructure.exception.UnrecognizedRelationException;
 import com.pl.leadership_choice.library.domain.group.member.Predisposition;
 
 import java.util.HashMap;

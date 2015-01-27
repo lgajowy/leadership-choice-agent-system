@@ -1,4 +1,4 @@
-package com.pl.leadership_choice.library.infrastructure.calculator;
+package com.pl.leadership_choice.library.domain.calculator;
 
 
 import com.pl.leadership_choice.library.domain.group.leader.OptionalLeaderParameter;

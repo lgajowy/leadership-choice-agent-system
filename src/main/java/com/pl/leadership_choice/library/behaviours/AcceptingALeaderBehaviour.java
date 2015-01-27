@@ -2,7 +2,7 @@ package com.pl.leadership_choice.library.behaviours;
 
 import com.pl.leadership_choice.library.LeadershipChoiceAgent;
 import com.pl.leadership_choice.library.domain.group.candidacy.Candidacy;
-import com.pl.leadership_choice.library.infrastructure.JsonMapper;
+import com.pl.leadership_choice.library.infrastructure.json.JsonMapper;
 import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;

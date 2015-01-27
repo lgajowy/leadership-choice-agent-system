@@ -1,4 +1,4 @@
-package com.pl.leadership_choice.library.infrastructure;
+package com.pl.leadership_choice.library.infrastructure.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

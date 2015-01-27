@@ -1,12 +1,10 @@
 package com.pl.leadership_choice.library.behaviours;
 
 import com.pl.leadership_choice.library.domain.group.candidacy.Candidacy;
-import com.pl.leadership_choice.library.infrastructure.JsonMapper;
+import com.pl.leadership_choice.library.infrastructure.json.JsonMapper;
 import jade.core.AID;
-import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,9 +23,9 @@ public class RejectProposalBehaviour extends SimpleBehaviour {
         this.receiver = new AID(candidacy.getPretenderId(), AID.ISGUID);
         this.rejectedCandidacy = candidacy;
     }
+
     public void action() {
         logger.info(this.getClass().getName() + " START");
-
 
         String content = JsonMapper.createJsonFromObject(rejectedCandidacy);
 
@@ -35,9 +33,10 @@ public class RejectProposalBehaviour extends SimpleBehaviour {
         this.msg.addReceiver(receiver);
         this.msg.setContent(content);
 
-        logger.info("Sending REJECT_PROPOSAL to "+ receiver.getName());
+        logger.info("Sending REJECT_PROPOSAL to " + receiver.getName());
         myAgent.send(msg);
     }
+
     public boolean done() {
         return true;
     }
