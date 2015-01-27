@@ -73,7 +73,7 @@ public class LeadershipChoiceAgent extends Agent {
     }
 
     public boolean alreadyHasALeader(String groupId) {
-        return this.groupMembershipRegistrar.getGroupMemberships().get(groupId) != null;
+        return this.groupMembershipRegistrar.getGroupMemberships().get(groupId).getCurrentLeaderAID() != null;
     }
 
     public boolean canBecomeLeader(String groupId) {

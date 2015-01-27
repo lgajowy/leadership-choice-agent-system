@@ -21,7 +21,6 @@ public class GroupRequestSendingAgent extends Agent {
 
     Logger logger = LoggerFactory.getLogger(GroupRequestSendingAgent.class);
 
-
     LeadershipChoiceRequest requestContent;
 
     protected void setup() {
