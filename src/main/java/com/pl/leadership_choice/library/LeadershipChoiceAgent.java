@@ -24,10 +24,7 @@
  */
 package com.pl.leadership_choice.library;
 
-import com.pl.leadership_choice.library.behaviours.LeaderQueryAnsweringBehaviour;
-import com.pl.leadership_choice.library.behaviours.ReceiveGroupRegistrationRequestBehaviour;
-import com.pl.leadership_choice.library.behaviours.ReceiveProposalBehaviour;
-import com.pl.leadership_choice.library.behaviours.ReceivingLeaderAgreementsBehaviour;
+import com.pl.leadership_choice.library.behaviours.*;
 import com.pl.leadership_choice.library.domain.group.Group;
 import com.pl.leadership_choice.library.domain.group.GroupRegistrar;
 import com.pl.leadership_choice.library.domain.group.candidacy.Candidacy;
@@ -52,15 +49,14 @@ public class LeadershipChoiceAgent extends Agent {
 
     protected void setup() {
         logger.info(getAID().getName() + ": Agent has started.");
-
         readAgentProperties(String.valueOf(getArguments()[0]));
 
-        this.addBehaviour(new ReceiveGroupRegistrationRequestBehaviour());
-        //this.addBehaviour(new AcceptingALeaderBehaviour());
         this.addBehaviour(new ReceivingLeaderAgreementsBehaviour());
         this.addBehaviour(new LeaderQueryAnsweringBehaviour());
         this.addBehaviour(new ReceiveProposalBehaviour());
-
+        this.addBehaviour(new ReceiveProposalResponseBehaviour());
+        this.addBehaviour(new ReceiveNewLeaderBehaviour());
+        this.addBehaviour(new ReceiveGroupRegistrationRequestBehaviour());
         //doDelete();
     }
 
@@ -93,15 +89,15 @@ public class LeadershipChoiceAgent extends Agent {
         agentProperties = new FromJsonFileAgentConfigurer(new File(propertiesFilePath)).configureAgent();
     }
 
-    public GroupRegistrar getGroupRegistrar() {
+    public synchronized GroupRegistrar getGroupRegistrar() {
         return groupRegistrar;
     }
 
-    public GroupMembershipRegistrar getGroupMembershipRegistrar() {
+    public synchronized GroupMembershipRegistrar getGroupMembershipRegistrar() {
         return groupMembershipRegistrar;
     }
 
-    public Map getAgentProperties() {
+    public synchronized Map getAgentProperties() {
         return agentProperties;
     }
 }

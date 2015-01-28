@@ -37,7 +37,7 @@ public class SendProposalsToGroupMembers extends SimpleBehaviour {
         addMessageReceivers();
 
         logger.info("PROPOSAL to all members except ME");
-        myAgent.addBehaviour(new ReceiveProposalResponseBehaviour());
+        //myAgent.addBehaviour(new ReceiveProposalResponseBehaviour());
         myAgent.send(msg);
     }
 

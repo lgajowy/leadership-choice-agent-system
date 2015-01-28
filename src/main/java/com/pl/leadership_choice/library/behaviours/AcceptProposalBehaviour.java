@@ -64,7 +64,7 @@ public class AcceptProposalBehaviour extends SimpleBehaviour {
         myAgent.send(msg);
 
         //add behaviour - waiting for any leader changes
-        myAgent.addBehaviour(new ReceiveNewLeaderBehaviour());
+        //myAgent.addBehaviour(new ReceiveNewLeaderBehaviour());
         this.done = true;
     }
 

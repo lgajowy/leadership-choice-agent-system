@@ -15,40 +15,29 @@ import org.slf4j.LoggerFactory;
 public class ReceiveProposalResponseBehaviour extends CyclicBehaviour {
 
     Logger logger = LoggerFactory.getLogger(ReceiveProposalResponseBehaviour.class);
-    private MessageTemplate mt;
     private ACLMessage msg;
-    //private String groupId;
-
 
     public void action() {
         LeadershipChoiceAgent myAgent = (LeadershipChoiceAgent) this.myAgent;
-
-        //logger.debug(this.getClass().getName() + " STARTED");
-
         MessageTemplate mtReject = MessageTemplate.MatchPerformative(ACLMessage.REJECT_PROPOSAL);
         MessageTemplate mtAccept = MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL);
 
-        this.mt.or(mtAccept, mtReject);
+        this.msg = myAgent.receive(MessageTemplate.or(mtAccept, mtReject));
 
-        this.msg = myAgent.receive(this.mt);
-
-        if(this.msg != null) {
-            //odebrano komunikat
+        if (this.msg == null) {
+            block();
+        } else {
             Candidacy receivedCandidacy = (Candidacy) JsonMapper.mapJsonStringToObject(msg.getContent(), Candidacy.class);
 
-            if(receivedCandidacy != null) {
+            if (receivedCandidacy != null) {
                 if (mtReject.match(this.msg)) {
-                    //odebrano REJECT_PROPOSAL
                     logger.info("REJECT_PROPOSAL from " + this.msg.getSender().getName());
-                    myAgent.addBehaviour(new ReceiveProposalBehaviour());
+                    //myAgent.addBehaviour(new ReceiveProposalBehaviour());
                 } else if (mtAccept.match(this.msg)) {
-                    //odebrano ACCEPT_PROPOSAL
                     logger.info("ACCEPT_PROPOSAL from " + this.msg.getSender().getName());
                     myAgent.addBehaviour(new BecomingALeaderBehaviour(receivedCandidacy));
                 }
             }
-        } else {
-            block();
         }
     }
 }

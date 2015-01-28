@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
  */
 public class RejectProposalBehaviour extends SimpleBehaviour {
     Logger logger = LoggerFactory.getLogger(RejectProposalBehaviour.class);
-    //private MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.REJECT_PROPOSAL);
     private ACLMessage msg;
     private AID receiver;
     private Candidacy rejectedCandidacy;

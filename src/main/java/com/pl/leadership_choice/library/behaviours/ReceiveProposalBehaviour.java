@@ -21,7 +21,7 @@ public class ReceiveProposalBehaviour extends CyclicBehaviour {
     private String agentName;
     private boolean done = false;
 
-    public void action() {
+    public synchronized void action() {
         LeadershipChoiceAgent myAgent = (LeadershipChoiceAgent) this.myAgent;
         agentName = myAgent.getAID().getName();
 
