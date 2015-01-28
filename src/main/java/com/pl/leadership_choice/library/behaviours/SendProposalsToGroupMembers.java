@@ -33,7 +33,7 @@ public class SendProposalsToGroupMembers extends SimpleBehaviour {
         Candidacy agentCandidacy = new Candidacy(myAgent.getAID().getName(), groupId, candidateScore, null);
 
         msg = new ACLMessage(ACLMessage.PROPOSE);
-        msg.setContent(JsonMapper.createJsonFromObject(agentCandidacy));
+        msg.setContent(JsonMapper.createJsonStringFromObject(agentCandidacy));
         addMessageReceivers();
 
         logger.info(myAgent.getAID().getName() + ": Sending proposal message to all members..." + msg.getContent());

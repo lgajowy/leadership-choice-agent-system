@@ -9,18 +9,30 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class JsonMapperTest {
 
-    private final String testPojoJSON = "{\n" +
+    private final String testJSONString = "{\n" +
             "    \"testField\": \"xxx\"\n" +
             "}";
 
     @Test
     public void shouldReturnJsonStringFromPojo() throws Exception {
-        assertThat(JsonMapper.createJsonFromObject(new Candidacy("someId", "groupId", 20D, null))).isNotEmpty();
+        assertThat(JsonMapper.createJsonStringFromObject(new Candidacy("someId", "groupId", 20D, null))).isNotEmpty();
     }
 
     @Test
     public void shouldMapToObjectProperly() throws Exception {
-        assertThat(JsonMapper.mapJsonStringToObject(testPojoJSON, TestPojo.class)).isInstanceOf(TestPojo.class);
+        assertThat(JsonMapper.mapJsonStringToObject(testJSONString, TestPojo.class)).isInstanceOf(TestPojo.class);
+
+    }
+
+    @Test
+    public void shouldReturnNullIfStringIsEmpty() throws Exception {
+        assertThat(JsonMapper.mapJsonStringToObject(new String(), TestPojo.class)).isNull();
+
+    }
+
+    @Test
+    public void shouldReturnNullIfNullStringGiven() throws Exception {
+        assertThat(JsonMapper.mapJsonStringToObject(null, TestPojo.class)).isNull();
 
     }
 

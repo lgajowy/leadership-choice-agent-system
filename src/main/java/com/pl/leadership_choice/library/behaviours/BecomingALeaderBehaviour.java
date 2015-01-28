@@ -35,7 +35,7 @@ public class BecomingALeaderBehaviour extends OneShotBehaviour {
         takeSubordinatesOver();
 
         ACLMessage informMessage = new ACLMessage(ACLMessage.INFORM);
-        informMessage.setContent(JsonMapper.createJsonFromObject(leaderCandidacy));
+        informMessage.setContent(JsonMapper.createJsonStringFromObject(leaderCandidacy));
         informMessage.addReceiver(new AID(newSubordinateCandidacy.getPretenderId(), AID.ISGUID));
 
         logger.info("Sending INFORM message to " + newSubordinateCandidacy.getPretenderId() + ", because I should be his leader group: " + leaderCandidacy.getGroupId());

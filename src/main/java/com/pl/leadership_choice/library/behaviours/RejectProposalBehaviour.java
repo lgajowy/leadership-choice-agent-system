@@ -27,7 +27,7 @@ public class RejectProposalBehaviour extends SimpleBehaviour {
     public void action() {
         logger.info(this.getClass().getName() + " START");
 
-        String content = JsonMapper.createJsonFromObject(rejectedCandidacy);
+        String content = JsonMapper.createJsonStringFromObject(rejectedCandidacy);
 
         this.msg = new ACLMessage(ACLMessage.REJECT_PROPOSAL);
         this.msg.addReceiver(receiver);

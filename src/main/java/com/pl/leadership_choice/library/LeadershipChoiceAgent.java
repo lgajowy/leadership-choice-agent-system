@@ -25,12 +25,14 @@
 package com.pl.leadership_choice.library;
 
 import com.pl.leadership_choice.library.behaviours.AcceptingALeaderBehaviour;
-import com.pl.leadership_choice.library.behaviours.ReceivingLeaderAgreementsBehaviour;
-import com.pl.leadership_choice.library.domain.group.candidacy.Candidacy;
-import com.pl.leadership_choice.library.infrastructure.configuration.FromJsonFileAgentConfigurer;
+import com.pl.leadership_choice.library.behaviours.LeaderQueryAnsweringBehaviour;
 import com.pl.leadership_choice.library.behaviours.ReceiveGroupRegistrationRequestBehaviour;
+import com.pl.leadership_choice.library.behaviours.ReceivingLeaderAgreementsBehaviour;
+import com.pl.leadership_choice.library.domain.group.Group;
 import com.pl.leadership_choice.library.domain.group.GroupRegistrar;
+import com.pl.leadership_choice.library.domain.group.candidacy.Candidacy;
 import com.pl.leadership_choice.library.domain.group.member.GroupMembershipRegistrar;
+import com.pl.leadership_choice.library.infrastructure.configuration.FromJsonFileAgentConfigurer;
 import jade.core.Agent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,12 +58,18 @@ public class LeadershipChoiceAgent extends Agent {
         this.addBehaviour(new ReceiveGroupRegistrationRequestBehaviour());
         this.addBehaviour(new AcceptingALeaderBehaviour());
         this.addBehaviour(new ReceivingLeaderAgreementsBehaviour());
+        this.addBehaviour(new LeaderQueryAnsweringBehaviour());
 
         //doDelete();
     }
 
     public Candidacy getLeader(String groupId) {
-        return groupRegistrar.getGroups().get(groupId).getLeader();
+        Group group = groupRegistrar.getGroups().get(groupId);
+        if (group != null) {
+            return group.getLeader();
+        } else {
+            return null;
+        }
     }
 
     public void setLeader(Candidacy leader) {

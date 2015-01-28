@@ -14,7 +14,7 @@ public class JsonMapper {
 
     private static Logger logger = LoggerFactory.getLogger(JsonMapper.class);
 
-    public static String createJsonFromObject(Object pojo) {
+    public static String createJsonStringFromObject(Object pojo) {
         ObjectMapper mapper = new ObjectMapper();
         try {
             return mapper.writeValueAsString(pojo);
@@ -28,7 +28,9 @@ public class JsonMapper {
     public static Object mapJsonStringToObject(String jsonString, Class clazz) {
         Object result = null;
         try {
-            result = new ObjectMapper().readValue(jsonString, clazz);
+            if(jsonString != null) {
+                result = new ObjectMapper().readValue(jsonString, clazz);
+            }
         } catch (IOException e) {
             logger.error("Unable to parse json String!");
             e.printStackTrace();

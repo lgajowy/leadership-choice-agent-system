@@ -40,7 +40,7 @@ public class NewLeaderChoiceBehaviour extends OneShotBehaviour {
     private void agreeThatHeShouldBeTheLeader() {
         LeadershipChoiceAgent myAgent = (LeadershipChoiceAgent) this.myAgent;
         ACLMessage agreeMessage = new ACLMessage(ACLMessage.AGREE);
-        agreeMessage.setContent(JsonMapper.createJsonFromObject(subordinate));
+        agreeMessage.setContent(JsonMapper.createJsonStringFromObject(subordinate));
         agreeMessage.addReceiver(new AID(leader.getPretenderId(), AID.ISGUID));
         logger.info("Sending AGREE message to " + leader.getPretenderId() + ", because he should be our group leader: " + leader.getGroupId());
         myAgent.send(agreeMessage);
@@ -49,7 +49,7 @@ public class NewLeaderChoiceBehaviour extends OneShotBehaviour {
     private void informThatIAmTheLeader() {
         LeadershipChoiceAgent myAgent = (LeadershipChoiceAgent) this.myAgent;
         ACLMessage informMessage = new ACLMessage(ACLMessage.INFORM);
-        informMessage.setContent(JsonMapper.createJsonFromObject(leader));
+        informMessage.setContent(JsonMapper.createJsonStringFromObject(leader));
         informMessage.addReceiver(new AID(subordinate.getPretenderId(), AID.ISGUID));
         logger.info("Sending INFORM message to " + subordinate.getPretenderId() + ", because I should be his leader group: " + leader.getGroupId());
         myAgent.send(informMessage);
