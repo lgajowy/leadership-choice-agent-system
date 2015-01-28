@@ -17,7 +17,7 @@ import java.util.Set;
 public class AcceptProposalBehaviour extends SimpleBehaviour {
 
     Logger logger = LoggerFactory.getLogger(AcceptProposalBehaviour.class);
-    //private MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.REJECT_PROPOSAL);
+
     private ACLMessage msg;
     private AID receiver;
     private Candidacy acceptedCandidacy;
@@ -41,7 +41,6 @@ public class AcceptProposalBehaviour extends SimpleBehaviour {
         this.msg = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
         this.msg.addReceiver(receiver);
         this.msg.setContent(content);
-
 
 
         //tell my subordinates (if i have any) that we have new leader.

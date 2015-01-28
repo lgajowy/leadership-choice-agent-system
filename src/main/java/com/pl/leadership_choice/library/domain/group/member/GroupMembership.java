@@ -12,8 +12,6 @@ public class GroupMembership {
 
     private Predisposition predisposition;
 
-    private AID currentLeaderAID = null;
-
     private Candidacy memberCandidacy = null;
 
     public GroupMembership(String id, Predisposition predisposition) {
@@ -35,14 +33,6 @@ public class GroupMembership {
 
     public void setPredisposition(Predisposition predisposition) {
         this.predisposition = predisposition;
-    }
-
-    public AID getCurrentLeaderAID() {
-        return currentLeaderAID;
-    }
-
-    public void setCurrentLeaderAID(AID currentLeaderAID) {
-        this.currentLeaderAID = currentLeaderAID;
     }
 
     public Candidacy getMemberCandidacy() {

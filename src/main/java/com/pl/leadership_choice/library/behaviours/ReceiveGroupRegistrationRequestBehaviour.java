@@ -25,8 +25,6 @@ public class ReceiveGroupRegistrationRequestBehaviour extends CyclicBehaviour {
     private LeadershipChoiceRequest request;
 
     public void action() {
-        //logger.info(this.getClass().getName() + " START");
-
         message = myAgent.receive(requestMessageTemplate);
         if (message == null) {
             block();
@@ -40,7 +38,7 @@ public class ReceiveGroupRegistrationRequestBehaviour extends CyclicBehaviour {
                 setAsLeaderIfHeCanBeOne(agentMembershipInGroup);
             } else {
                 sendProposalsIfAgentCanBecomeLeader(agentMembershipInGroup);
-                myAgent.addBehaviour(new ReceiveProposalBehaviour());
+                //myAgent.addBehaviour(new ReceiveProposalBehaviour());
             }
         }
     }

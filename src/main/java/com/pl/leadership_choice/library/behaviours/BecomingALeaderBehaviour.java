@@ -45,9 +45,6 @@ public class BecomingALeaderBehaviour extends OneShotBehaviour {
                 + " subordinates count: "
                 + myAgent.getCandidacy(leaderCandidacy.getGroupId()).getPretenderSubordinates().size());
         myAgent.send(informMessage);
-
-        myAgent.addBehaviour(new ReceiveProposalBehaviour());
-
     }
 
     private void takeSubordinatesOver() {

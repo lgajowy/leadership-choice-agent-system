@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by adam on 18.01.15.
  */
-public class ReceiveProposalBehaviour extends SimpleBehaviour {
+public class ReceiveProposalBehaviour extends CyclicBehaviour {
 
     Logger logger = LoggerFactory.getLogger(ReceiveProposalBehaviour.class);
     private MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.PROPOSE);
@@ -23,9 +23,7 @@ public class ReceiveProposalBehaviour extends SimpleBehaviour {
 
     public void action() {
         LeadershipChoiceAgent myAgent = (LeadershipChoiceAgent) this.myAgent;
-
         agentName = myAgent.getAID().getName();
-        //logger.debug(this.getClass().getName() + " STARTED");
 
         msg = myAgent.receive(mt);
         if (msg == null) {
@@ -69,7 +67,4 @@ public class ReceiveProposalBehaviour extends SimpleBehaviour {
 
     }
 
-    public boolean done() {
-        return this.done;
-    }
 }

@@ -25,9 +25,8 @@
 package com.pl.leadership_choice.library;
 
 import com.pl.leadership_choice.library.behaviours.LeaderQueryAnsweringBehaviour;
-import com.pl.leadership_choice.library.domain.group.candidacy.Candidacy;
-import com.pl.leadership_choice.library.infrastructure.configuration.FromJsonFileAgentConfigurer;
 import com.pl.leadership_choice.library.behaviours.ReceiveGroupRegistrationRequestBehaviour;
+import com.pl.leadership_choice.library.behaviours.ReceiveProposalBehaviour;
 import com.pl.leadership_choice.library.behaviours.ReceivingLeaderAgreementsBehaviour;
 import com.pl.leadership_choice.library.domain.group.Group;
 import com.pl.leadership_choice.library.domain.group.GroupRegistrar;
@@ -60,6 +59,7 @@ public class LeadershipChoiceAgent extends Agent {
         //this.addBehaviour(new AcceptingALeaderBehaviour());
         this.addBehaviour(new ReceivingLeaderAgreementsBehaviour());
         this.addBehaviour(new LeaderQueryAnsweringBehaviour());
+        this.addBehaviour(new ReceiveProposalBehaviour());
 
         //doDelete();
     }
@@ -82,7 +82,7 @@ public class LeadershipChoiceAgent extends Agent {
     }
 
     public boolean alreadyHasALeader(String groupId) {
-        return this.groupMembershipRegistrar.getGroupMemberships().get(groupId).getCurrentLeaderAID() != null;
+        return groupRegistrar.getGroups().get(groupId).getLeader() != null;
     }
 
     public boolean canBecomeLeader(String groupId) {
