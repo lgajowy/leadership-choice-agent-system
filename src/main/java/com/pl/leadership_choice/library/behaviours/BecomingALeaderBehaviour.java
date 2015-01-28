@@ -27,7 +27,7 @@ public class BecomingALeaderBehaviour extends OneShotBehaviour {
     @Override
     public void action() {
 
-        logger.info(this.getClass().getName() + " START");
+        //logger.info(this.getClass().getName() + " START");
 
         LeadershipChoiceAgent myAgent = (LeadershipChoiceAgent) this.myAgent;
         leaderCandidacy = myAgent.getCandidacy(newSubordinateCandidacy.getGroupId());
@@ -38,12 +38,21 @@ public class BecomingALeaderBehaviour extends OneShotBehaviour {
         informMessage.setContent(JsonMapper.createJsonStringFromObject(leaderCandidacy));
         informMessage.addReceiver(new AID(newSubordinateCandidacy.getPretenderId(), AID.ISGUID));
 
-        logger.info("Sending INFORM message to " + newSubordinateCandidacy.getPretenderId() + ", because I should be his leader group: " + leaderCandidacy.getGroupId());
+        logger.info("INFORM to "
+                + newSubordinateCandidacy.getPretenderId()
+                + ", because I should be his leader group: "
+                + leaderCandidacy.getGroupId()
+                + " subordinates count: "
+                + myAgent.getCandidacy(leaderCandidacy.getGroupId()).getPretenderSubordinates().size());
         myAgent.send(informMessage);
+
+        myAgent.addBehaviour(new ReceiveProposalBehaviour());
+
     }
 
     private void takeSubordinatesOver() {
-        logger.info("Taking over new subordinates of: " + newSubordinateCandidacy.getPretenderId());
+        //logger.info("Taking over new subordinates of: " + newSubordinateCandidacy.getPretenderId());
         leaderCandidacy.addNewSubordinates(newSubordinateCandidacy.getPretenderSubordinates());
+        leaderCandidacy.addNewSubordinate(newSubordinateCandidacy.getPretenderId());
     }
 }

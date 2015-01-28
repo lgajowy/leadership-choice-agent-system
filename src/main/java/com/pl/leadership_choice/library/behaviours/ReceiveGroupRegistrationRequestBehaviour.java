@@ -25,13 +25,13 @@ public class ReceiveGroupRegistrationRequestBehaviour extends CyclicBehaviour {
     private LeadershipChoiceRequest request;
 
     public void action() {
-        logger.info(this.getClass().getName() + " START");
+        //logger.info(this.getClass().getName() + " START");
 
         message = myAgent.receive(requestMessageTemplate);
         if (message == null) {
             block();
         } else {
-            logger.info("Received REQUEST: " + message.getContent() + ". From : " + message.getSender().getName());
+            logger.info("REQUEST from : " + message.getSender().getName());
             request = (LeadershipChoiceRequest) JsonMapper.mapJsonStringToObject(message.getContent(), LeadershipChoiceRequest.class);
 
             GroupMembership agentMembershipInGroup = registerNewGroup();
@@ -67,8 +67,10 @@ public class ReceiveGroupRegistrationRequestBehaviour extends CyclicBehaviour {
 
     private void sendProposalsIfAgentCanBecomeLeader(GroupMembership agentMembershipInGroup) {
         if (agentMembershipInGroup.getPredisposition().getCanBecomeLeader()) {
-            logger.info(myAgent.getAID().getName() + ": Agent can become leader of group: " + request.getGroupId()
-                    + " It's score: " + agentMembershipInGroup.getPredisposition().getScore());
+            //logger.info(myAgent.getAID().getName() + ": Agent can become leader of group: " + request.getGroupId()
+            //        + " It's score: " + agentMembershipInGroup.getPredisposition().getScore());
+
+            //logger.info(myAgent.getAID().getName() + ": Sending proposals to other members... ");
             myAgent.addBehaviour(new SendProposalsToGroupMembers(request.getGroupId()));
         }
     }

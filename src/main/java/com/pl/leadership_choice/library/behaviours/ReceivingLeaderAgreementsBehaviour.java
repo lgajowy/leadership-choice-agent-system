@@ -26,10 +26,10 @@ public class ReceivingLeaderAgreementsBehaviour extends CyclicBehaviour {
         if (agreeMessage == null) {
             block();
         } else {
-            logger.info("Adding new subordinates to my suborinates set.");
+            //logger.info("Adding new subordinates to my suborinates set.");
             addIncomingSubordinates();
 
-            logger.info("Informing my suborinates about our new leader.");
+            //logger.info("Informing my suborinates about our new leader.");
             //TODO: wysłać wiadomość I am the new leader (itp).
         }
     }

@@ -3,21 +3,18 @@ package com.pl.leadership_choice.library.behaviours;
 import com.pl.leadership_choice.library.LeadershipChoiceAgent;
 import com.pl.leadership_choice.library.domain.group.candidacy.Candidacy;
 import com.pl.leadership_choice.library.infrastructure.json.JsonMapper;
-import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Set;
-
 /**
  * Created by lukasz on 26.01.15.
  */
-public class AcceptingALeaderBehaviour extends CyclicBehaviour {
+public class ReceiveNewLeaderBehaviour extends CyclicBehaviour {
 
-    private Logger logger = LoggerFactory.getLogger(AcceptingALeaderBehaviour.class);
+    private Logger logger = LoggerFactory.getLogger(ReceiveNewLeaderBehaviour.class);
 
     private MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
 
@@ -27,29 +24,28 @@ public class AcceptingALeaderBehaviour extends CyclicBehaviour {
     public void action() {
         LeadershipChoiceAgent myAgent = (LeadershipChoiceAgent) this.myAgent;
 
-        logger.info(this.getClass().getSimpleName() + " START");
+        //logger.info(this.getClass().getSimpleName() + " START");
 
         message = myAgent.receive(mt);
         if (message == null) {
             block();
         } else {
             Candidacy newLeaderData = (Candidacy) JsonMapper.mapJsonStringToObject(message.getContent(), Candidacy.class);
-            myAgent.setLeader(newLeaderData);
-            logger.info("My new leader is " + myAgent.getLeader(newLeaderData.getGroupId()).getPretenderId());
 
-            Set<String> subordinates = myAgent.getCandidacy(newLeaderData.getGroupId()).getPretenderSubordinates();
 
-            //tell my subordinates that we have new leader.
-            ACLMessage newMsg = new ACLMessage(ACLMessage.INFORM);
+            if(message.getSender().equals(myAgent.getLeader(newLeaderData.getGroupId()))) {
+                //to jest wiadomość od mojego dotychczasowego lidera - przyjmuje wszystko
+                myAgent.setLeader(newLeaderData);
+                logger.info("INFORM from "
+                            + message.getSender().getName()
+                            +  " My new leader is "
+                            + myAgent.getLeader(newLeaderData.getGroupId()).getPretenderId());
 
-            for(String s : subordinates) {
-                newMsg.addReceiver(new AID(s, AID.ISGUID));
+            } else {
+                //jakis inny kolo sle mi informy - niech spada
+
+                //logger.info("Ignoring INFORM msg. You are not my leader, " + newLeaderData.getPretenderId());
             }
-            newMsg.setContent(message.getContent());
-            myAgent.send(newMsg);
-
-            //send list of my subordinates to my new leader
-
         }
     }
 }

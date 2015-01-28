@@ -1,0 +1,26 @@
+{
+    "groupId": "group1",
+    "groupMembers": [
+        "lca1@Y580:1099/JADE",
+        "lca2@Y580:1099/JADE",
+        "lca3@Y580:1099/JADE",
+        "lca4@Y580:1099/JADE"
+    ],
+    "mandatoryFeatures": {
+        "height": {
+            "value": 10,
+            "weight": 10.5,
+            "relation": "isGreaterThan"
+        },
+        "niceHair": {
+            "value": 10,
+            "weight": 10.5,
+            "relation": "isGreaterThan"
+        }
+    },
+    "optionalFeatures": {
+        "fancyGlasses": {
+            "weight": "10"
+        }
+    }
+}

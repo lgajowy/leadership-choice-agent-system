@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class PredispositionCalculator {
 
-    private final static String GREATER_THAN = "greaterThan";
+    private final static String GREATER_THAN = "isGreaterThan";
     private final static String EQUAL_TO = "isEqualTo";
     private final static String LESS_THAN = "isLessThan";
     private final static String LESS_OR_EQUAL_TO = "isLessOrEqualTo";

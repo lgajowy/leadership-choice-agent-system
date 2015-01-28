@@ -20,7 +20,7 @@ public class Candidacy implements Comparable<Candidacy> {
     private Set<String> pretenderSubordinates;
 
     public Candidacy() {
-
+        this.pretenderSubordinates = new HashSet<>();
     }
 
     public Candidacy(String pretenderId, String groupId, Double pretenderScore, Set<String> pretenderSubordinates) {
@@ -80,6 +80,14 @@ public class Candidacy implements Comparable<Candidacy> {
     public void addNewSubordinates(Set<String> newSubordinates) {
         if (newSubordinates != null) {
             Sets.SetView<String> union = Sets.union(pretenderSubordinates, newSubordinates);
+            pretenderSubordinates = union.immutableCopy();
+        }
+    }
+    public void addNewSubordinate(String newSubordinate) {
+        if (newSubordinate != null && !newSubordinate.equals("")) {
+            HashSet<String> newSet = new HashSet<>();
+            newSet.add(newSubordinate);
+            Sets.SetView<String> union = Sets.union(pretenderSubordinates, newSet);
             pretenderSubordinates = union.immutableCopy();
         }
     }

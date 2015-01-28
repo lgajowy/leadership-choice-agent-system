@@ -36,7 +36,7 @@ public class SendProposalsToGroupMembers extends SimpleBehaviour {
         msg.setContent(JsonMapper.createJsonStringFromObject(agentCandidacy));
         addMessageReceivers();
 
-        logger.info(myAgent.getAID().getName() + ": Sending proposal message to all members..." + msg.getContent());
+        logger.info("PROPOSAL to all members except ME");
         myAgent.send(msg);
         myAgent.addBehaviour(new ReceiveProposalResponseBehaviour());
     }
@@ -45,7 +45,7 @@ public class SendProposalsToGroupMembers extends SimpleBehaviour {
         Set<String> members = ((LeadershipChoiceAgent) myAgent).getGroupRegistrar().getMembersForGroupsId(groupId);
         for (String s : members) {
             if (!s.equals(myAgent.getName())) {
-                logger.info("my name: "+myAgent.getName()+", his name: " + s);
+                //logger.info("my name: "+myAgent.getName()+", his name: " + s);
                 msg.addReceiver(new AID(s, AID.ISGUID));
             }
         }

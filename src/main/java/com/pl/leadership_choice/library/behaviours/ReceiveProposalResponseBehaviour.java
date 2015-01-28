@@ -23,7 +23,7 @@ public class ReceiveProposalResponseBehaviour extends CyclicBehaviour {
     public void action() {
         LeadershipChoiceAgent myAgent = (LeadershipChoiceAgent) this.myAgent;
 
-        logger.debug(this.getClass().getName() + " STARTED");
+        //logger.debug(this.getClass().getName() + " STARTED");
 
         MessageTemplate mtReject = MessageTemplate.MatchPerformative(ACLMessage.REJECT_PROPOSAL);
         MessageTemplate mtAccept = MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL);
@@ -36,13 +36,16 @@ public class ReceiveProposalResponseBehaviour extends CyclicBehaviour {
             //odebrano komunikat
             Candidacy receivedCandidacy = (Candidacy) JsonMapper.mapJsonStringToObject(msg.getContent(), Candidacy.class);
 
-            if(mtReject.match(this.msg)) {
-                //odebrano REJECT_PROPOSAL
-                logger.info("odebralem REJECT_PROPOSAL od " + this.msg.getSender().getName() + " tresc: " + this.msg.getContent());
-            } else {
-                //odebrano ACCEPT_PROPOSAL
-                logger.info("odebralem ACCEPT_PROPOSAL od " + this.msg.getSender().getName() + " tresc: " + this.msg.getContent());
-                myAgent.addBehaviour(new BecomingALeaderBehaviour(myAgent.getCandidacy(receivedCandidacy.getGroupId())));
+            if(receivedCandidacy != null) {
+                if (mtReject.match(this.msg)) {
+                    //odebrano REJECT_PROPOSAL
+                    logger.info("REJECT_PROPOSAL from " + this.msg.getSender().getName());
+                    myAgent.addBehaviour(new ReceiveProposalBehaviour());
+                } else if (mtAccept.match(this.msg)) {
+                    //odebrano ACCEPT_PROPOSAL
+                    logger.info("ACCEPT_PROPOSAL from " + this.msg.getSender().getName());
+                    myAgent.addBehaviour(new BecomingALeaderBehaviour(receivedCandidacy));
+                }
             }
         } else {
             block();

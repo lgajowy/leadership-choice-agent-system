@@ -17,15 +17,17 @@ public class RejectProposalBehaviour extends SimpleBehaviour {
     private ACLMessage msg;
     private AID receiver;
     private Candidacy rejectedCandidacy;
+    private boolean done;
 
     public RejectProposalBehaviour(Candidacy candidacy) {
         super();
         this.receiver = new AID(candidacy.getPretenderId(), AID.ISGUID);
         this.rejectedCandidacy = candidacy;
+        this.done = false;
     }
 
     public void action() {
-        logger.info(this.getClass().getName() + " START");
+        //logger.info(this.getClass().getName() + " START");
 
         String content = JsonMapper.createJsonStringFromObject(rejectedCandidacy);
 
@@ -33,11 +35,13 @@ public class RejectProposalBehaviour extends SimpleBehaviour {
         this.msg.addReceiver(receiver);
         this.msg.setContent(content);
 
-        logger.info("Sending REJECT_PROPOSAL to " + receiver.getName());
+        logger.info("REJECT_PROPOSAL to " + receiver.getName());
         myAgent.send(msg);
+
+        this.done = true;
     }
 
     public boolean done() {
-        return true;
+        return this.done;
     }
 }
