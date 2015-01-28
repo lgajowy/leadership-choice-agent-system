@@ -21,7 +21,7 @@ public class ReceiveProposalBehaviour extends CyclicBehaviour {
     private String agentName;
     private boolean done = false;
 
-    public synchronized void action() {
+    public void action() {
         LeadershipChoiceAgent myAgent = (LeadershipChoiceAgent) this.myAgent;
         agentName = myAgent.getAID().getName();
 
@@ -45,11 +45,10 @@ public class ReceiveProposalBehaviour extends CyclicBehaviour {
                 if (myAgent.canBecomeLeader(otherAgentsCandidacy.getGroupId())) {
                     if (myAgent.getCandidacy(otherAgentsCandidacy.getGroupId()).compareTo(otherAgentsCandidacy) == 1) {
                         myAgent.addBehaviour(new RejectProposalBehaviour(otherAgentsCandidacy));
-                        //myAgent.addBehaviour(new BecomingALeaderBehaviour(otherAgentsCandidacy));
+                        myAgent.addBehaviour(new BecomingALeaderBehaviour(otherAgentsCandidacy));
                     } else if (myAgent.getCandidacy(otherAgentsCandidacy.getGroupId()).compareTo(otherAgentsCandidacy) == -1) {
                         // he becomes leader
                         myAgent.addBehaviour(new AcceptProposalBehaviour(otherAgentsCandidacy));
-                        //myAgent.addBehaviour(new AcceptingALeaderBehaviour());
                     } else if (myAgent.getCandidacy(otherAgentsCandidacy.getGroupId()).compareTo(otherAgentsCandidacy) == 0
                             && (!myAgent.getLeader(otherAgentsCandidacy.getGroupId()).equals(otherAgentsCandidacy.getPretenderId()))) {
                         //we need to check whether he is not our leader already

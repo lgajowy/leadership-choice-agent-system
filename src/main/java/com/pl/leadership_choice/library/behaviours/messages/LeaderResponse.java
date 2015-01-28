@@ -9,6 +9,9 @@ public class LeaderResponse {
 
     private String leaderId;
 
+    public LeaderResponse() {
+    }
+
     public LeaderResponse(String groupId, String leaderId) {
         this.groupId = groupId;
         this.leaderId = leaderId;

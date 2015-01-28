@@ -26,11 +26,10 @@ public class BecomingALeaderBehaviour extends OneShotBehaviour {
 
     @Override
     public void action() {
-
-        //logger.info(this.getClass().getName() + " START");
-
         LeadershipChoiceAgent myAgent = (LeadershipChoiceAgent) this.myAgent;
         leaderCandidacy = myAgent.getCandidacy(newSubordinateCandidacy.getGroupId());
+
+        myAgent.setLeader(leaderCandidacy);
 
         takeSubordinatesOver();
 
@@ -48,7 +47,7 @@ public class BecomingALeaderBehaviour extends OneShotBehaviour {
     }
 
     private void takeSubordinatesOver() {
-        //logger.info("Taking over new subordinates of: " + newSubordinateCandidacy.getPretenderId());
+        logger.info("Taking over subordinates of: " + newSubordinateCandidacy.getPretenderId());
         leaderCandidacy.addNewSubordinates(newSubordinateCandidacy.getPretenderSubordinates());
         leaderCandidacy.addNewSubordinate(newSubordinateCandidacy.getPretenderId());
     }
