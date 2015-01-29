@@ -1,7 +1,7 @@
 package com.pl.leadership_choice.library;
 
 import com.pl.leadership_choice.library.behaviours.LeaderQueryResponseGettingBehaviour;
-import com.pl.leadership_choice.library.behaviours.messages.LeaderRequest;
+import com.pl.leadership_choice.library.behaviours.messages.GroupIdOnlyContent;
 import com.pl.leadership_choice.library.infrastructure.json.JsonMapper;
 import jade.core.AID;
 import jade.core.Agent;
@@ -12,9 +12,9 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by lukasz on 27.01.15.
  */
-public class AskingForLeaderAgent extends Agent {
+public class AskingForLeaderExampleAgent extends Agent {
 
-    Logger logger = LoggerFactory.getLogger(AskingForLeaderAgent.class);
+    Logger logger = LoggerFactory.getLogger(AskingForLeaderExampleAgent.class);
 
     protected void setup() {
         String queryReceiver = String.valueOf(getArguments()[0]);
@@ -23,7 +23,7 @@ public class AskingForLeaderAgent extends Agent {
             ACLMessage isLeaderElectedQuestion = new ACLMessage(ACLMessage.QUERY_IF);
             isLeaderElectedQuestion.addReceiver(new AID(queryReceiver, AID.ISGUID));
 
-            LeaderRequest request = new LeaderRequest(groupId);
+            GroupIdOnlyContent request = new GroupIdOnlyContent(groupId);
             String jsonStringFromObject = JsonMapper.createJsonStringFromObject(request);
             isLeaderElectedQuestion.setContent(jsonStringFromObject);
             logger.info("Asking whether the agent has been elected and who is he...");

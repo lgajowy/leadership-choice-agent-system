@@ -1,7 +1,7 @@
 package com.pl.leadership_choice.library.behaviours;
 
 import com.pl.leadership_choice.library.LeadershipChoiceAgent;
-import com.pl.leadership_choice.library.behaviours.messages.LeaderRequest;
+import com.pl.leadership_choice.library.behaviours.messages.GroupIdOnlyContent;
 import com.pl.leadership_choice.library.behaviours.messages.LeaderResponse;
 import com.pl.leadership_choice.library.domain.group.candidacy.Candidacy;
 import com.pl.leadership_choice.library.infrastructure.json.JsonMapper;
@@ -27,7 +27,7 @@ public class LeaderQueryAnsweringBehaviour extends CyclicBehaviour {
             block();
         } else {
             LeadershipChoiceAgent myAgent = (LeadershipChoiceAgent) this.myAgent;
-            LeaderRequest leaderRequest = (LeaderRequest) JsonMapper.mapJsonStringToObject(incomingMessage.getContent(), LeaderRequest.class);
+            GroupIdOnlyContent leaderRequest = (GroupIdOnlyContent) JsonMapper.mapJsonStringToObject(incomingMessage.getContent(), GroupIdOnlyContent.class);
             Candidacy groupLeader = myAgent.getLeader(leaderRequest.getGroupId());
 
             ACLMessage responseMessage = new ACLMessage(ACLMessage.INFORM);
@@ -37,7 +37,7 @@ public class LeaderQueryAnsweringBehaviour extends CyclicBehaviour {
         }
     }
 
-    private void assignContentAccordingToLeaderPresence(LeaderRequest leaderRequest, Candidacy groupLeader, ACLMessage responseMessage) {
+    private void assignContentAccordingToLeaderPresence(GroupIdOnlyContent leaderRequest, Candidacy groupLeader, ACLMessage responseMessage) {
         LeaderResponse responseContent;
         if(groupLeader != null) {
             responseContent = new LeaderResponse(groupLeader.getGroupId(), groupLeader.getPretenderId());

@@ -17,9 +17,9 @@ import java.util.Set;
 /**
  * Created by lukasz on 27.01.15.
  */
-public class GroupRequestSendingAgent extends Agent {
+public class GroupEstablishingExampleAgent extends Agent {
 
-    Logger logger = LoggerFactory.getLogger(GroupRequestSendingAgent.class);
+    Logger logger = LoggerFactory.getLogger(GroupEstablishingExampleAgent.class);
 
     LeadershipChoiceRequest requestContent;
 

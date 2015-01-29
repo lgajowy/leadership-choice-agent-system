@@ -61,7 +61,9 @@ public class PredispositionCalculator {
                 Double actualAgentFeatureValue = agentFeatures.get(leaderParameter.getKey());
                 Double featureWeight = leaderParameter.getValue().getWeight();
 
-                counter += actualAgentFeatureValue * featureWeight;
+                if (actualAgentFeatureValue != null) {
+                    counter += actualAgentFeatureValue * featureWeight;
+                }
                 denominator += featureWeight;
             }
         }

@@ -1,0 +1,26 @@
+{
+    "groupId": "group2",
+    "groupMembers": [
+        "lca1@lukasz-Inspiron-7520:1099/JADE",
+        "lca2@lukasz-Inspiron-7520:1099/JADE",
+        "lca3@lukasz-Inspiron-7520:1099/JADE",
+        "lca4@lukasz-Inspiron-7520:1099/JADE"
+    ],
+    "mandatoryFeatures": {
+        "height": {
+            "value": 10,
+            "weight": 10.5,
+            "relation": "isLessThan"
+        },
+        "niceHair": {
+            "value": 10,
+            "weight": 10.5,
+            "relation": "isLessThan"
+        }
+    },
+    "optionalFeatures": {
+        "fancyGlasses": {
+            "weight": "100"
+        }
+    }
+}

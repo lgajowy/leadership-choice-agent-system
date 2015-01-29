@@ -15,38 +15,34 @@ import org.slf4j.LoggerFactory;
 public class ReceiveProposalBehaviour extends CyclicBehaviour {
 
     private Logger logger = LoggerFactory.getLogger(ReceiveProposalBehaviour.class);
-    private MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.PROPOSE);
-    private ACLMessage msg;
+    private MessageTemplate proposeTemplate = MessageTemplate.MatchPerformative(ACLMessage.PROPOSE);
+    private ACLMessage message;
 
     public void action() {
         LeadershipChoiceAgent myAgent = (LeadershipChoiceAgent) this.myAgent;
 
-        msg = myAgent.receive(mt);
-        if (msg == null) {
+        message = myAgent.receive(proposeTemplate);
+        if (message == null) {
             block();
         } else {
-            logger.info("PROPOSAL from: " + msg.getSender().getName());
-            Candidacy otherAgentsCandidacy = (Candidacy) JsonMapper.mapJsonStringToObject(msg.getContent(), Candidacy.class);
+            logger.info("PROPOSAL from: " + message.getSender().getName());
+            Candidacy otherAgentsCandidacy = (Candidacy) JsonMapper.mapJsonStringToObject(message.getContent(), Candidacy.class);
 
-            if (myAgent.alreadyHasALeader(otherAgentsCandidacy.getGroupId())) {
-                //myAgent.addBehaviour(new RejectProposalBehaviour(otherAgentsCandidacy));
-            } else {
+            if (!myAgent.alreadyHasALeader(otherAgentsCandidacy.getGroupId())) {
                 if (myAgent.canBecomeLeader(otherAgentsCandidacy.getGroupId())) {
                     if (myScoreIsGreater(myAgent, otherAgentsCandidacy)) {
-                        //myAgent.addBehaviour(new RejectProposalBehaviour(otherAgentsCandidacy));
                         myAgent.addBehaviour(new BecomingALeaderBehaviour(otherAgentsCandidacy));
                     } else if (myScoreIsSmaller(myAgent, otherAgentsCandidacy)) {
                         myAgent.addBehaviour(new AcceptProposalBehaviour(otherAgentsCandidacy));
                     } else if (scoreIsEqual(myAgent, otherAgentsCandidacy)
                             && (!myAgent.getLeader(otherAgentsCandidacy.getGroupId()).equals(otherAgentsCandidacy.getPretenderId()))) {
-                        //we need to check whether he is not our leader already
+                        myAgent.addBehaviour(new BecomingALeaderBehaviour(otherAgentsCandidacy));
                     }
                 } else {
                     myAgent.addBehaviour(new AcceptProposalBehaviour(otherAgentsCandidacy));
                 }
             }
         }
-
     }
 
     private boolean scoreIsEqual(LeadershipChoiceAgent myAgent, Candidacy otherAgentsCandidacy) {

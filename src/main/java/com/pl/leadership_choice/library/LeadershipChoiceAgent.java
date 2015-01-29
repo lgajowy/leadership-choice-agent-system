@@ -28,6 +28,7 @@ import com.pl.leadership_choice.library.behaviours.*;
 import com.pl.leadership_choice.library.domain.group.Group;
 import com.pl.leadership_choice.library.domain.group.GroupRegistrar;
 import com.pl.leadership_choice.library.domain.group.candidacy.Candidacy;
+import com.pl.leadership_choice.library.domain.group.member.GroupMembership;
 import com.pl.leadership_choice.library.domain.group.member.GroupMembershipRegistrar;
 import com.pl.leadership_choice.library.infrastructure.configuration.FromJsonFileAgentConfigurer;
 import jade.core.Agent;
@@ -57,7 +58,7 @@ public class LeadershipChoiceAgent extends Agent {
         this.addBehaviour(new ReceiveProposalBehaviour());
         this.addBehaviour(new ReceiveInformAboutNewLeaderBehaviour());
         this.addBehaviour(new ReceiveGroupRegistrationRequestBehaviour());
-        //doDelete();
+        this.addBehaviour(new GroupResolvingRequestBehaviour());
     }
 
     public Candidacy getLeader(String groupId) {
@@ -66,6 +67,17 @@ public class LeadershipChoiceAgent extends Agent {
             return group.getLeader();
         } else {
             return null;
+        }
+    }
+
+    public void resolveGroup(String groupId) {
+        Map<String, Group> groups = groupRegistrar.getGroups();
+        Map<String, GroupMembership> groupMemberships = groupMembershipRegistrar.getGroupMemberships();
+        if (groups.containsKey(groupId) && groupMemberships.containsKey(groupId)) {
+            groups.remove(groupId);
+            groupMemberships.remove(groupId);
+        } else {
+            throw new RuntimeException("There is no group with such key!");
         }
     }
 

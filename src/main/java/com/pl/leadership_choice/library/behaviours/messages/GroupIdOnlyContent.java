@@ -3,14 +3,14 @@ package com.pl.leadership_choice.library.behaviours.messages;
 /**
  * Created by lukasz on 28.01.15.
  */
-public class LeaderRequest {
+public class GroupIdOnlyContent {
 
     private String groupId;
 
-    public LeaderRequest() {
+    public GroupIdOnlyContent() {
     }
 
-    public LeaderRequest(String groupId) {
+    public GroupIdOnlyContent(String groupId) {
         this.groupId = groupId;
     }
 
