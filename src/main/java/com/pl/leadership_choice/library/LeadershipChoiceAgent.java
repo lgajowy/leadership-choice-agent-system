@@ -51,11 +51,11 @@ public class LeadershipChoiceAgent extends Agent {
         logger.info(getAID().getName() + ": Agent has started.");
         readAgentProperties(String.valueOf(getArguments()[0]));
 
+        this.addBehaviour(new ReceiveAcceptProposalResponseBehaviour());
         this.addBehaviour(new ReceivingLeaderAgreementsBehaviour());
-        this.addBehaviour(new ReceiveProposalResponseBehaviour());
         this.addBehaviour(new LeaderQueryAnsweringBehaviour());
         this.addBehaviour(new ReceiveProposalBehaviour());
-        this.addBehaviour(new ReceiveNewLeaderBehaviour());
+        this.addBehaviour(new ReceiveInformAboutNewLeaderBehaviour());
         this.addBehaviour(new ReceiveGroupRegistrationRequestBehaviour());
         //doDelete();
     }

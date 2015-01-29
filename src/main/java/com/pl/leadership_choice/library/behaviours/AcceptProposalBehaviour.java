@@ -32,6 +32,8 @@ public class AcceptProposalBehaviour extends OneShotBehaviour {
     public void action() {
         LeadershipChoiceAgent myAgent = (LeadershipChoiceAgent)this.myAgent;
 
+        myAgent.setLeader(acceptedCandidacy);
+
         String content = JsonMapper.createJsonStringFromObject(myAgent.getCandidacy(acceptedCandidacy.getGroupId()));
 
         this.msg = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);

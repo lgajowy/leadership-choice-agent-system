@@ -12,9 +12,9 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by lukasz on 26.01.15.
  */
-public class ReceiveNewLeaderBehaviour extends CyclicBehaviour {
+public class ReceiveInformAboutNewLeaderBehaviour extends CyclicBehaviour {
 
-    private Logger logger = LoggerFactory.getLogger(ReceiveNewLeaderBehaviour.class);
+    private Logger logger = LoggerFactory.getLogger(ReceiveInformAboutNewLeaderBehaviour.class);
 
     private MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
 
@@ -28,14 +28,11 @@ public class ReceiveNewLeaderBehaviour extends CyclicBehaviour {
             block();
         } else {
             Candidacy newLeaderData = (Candidacy) JsonMapper.mapJsonStringToObject(message.getContent(), Candidacy.class);
-
-            //if (message.getSender().equals(myAgent.getLeader(newLeaderData.getGroupId()))) {
-                myAgent.setLeader(newLeaderData);
-                logger.info("INFORM from "
-                        + message.getSender().getName()
-                        + " My new leader is "
-                        + myAgent.getLeader(newLeaderData.getGroupId()).getPretenderId());
-            //}
+            myAgent.setLeader(newLeaderData);
+            logger.info("INFORM from "
+                    + message.getSender().getName()
+                    + " My new leader is "
+                    + myAgent.getLeader(newLeaderData.getGroupId()).getPretenderId());
         }
     }
 }

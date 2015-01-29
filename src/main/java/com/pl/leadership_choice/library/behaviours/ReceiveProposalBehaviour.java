@@ -18,7 +18,7 @@ public class ReceiveProposalBehaviour extends CyclicBehaviour {
     private MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.PROPOSE);
     private ACLMessage msg;
 
-    public synchronized void action() {
+    public void action() {
         LeadershipChoiceAgent myAgent = (LeadershipChoiceAgent) this.myAgent;
 
         msg = myAgent.receive(mt);
@@ -29,11 +29,11 @@ public class ReceiveProposalBehaviour extends CyclicBehaviour {
             Candidacy otherAgentsCandidacy = (Candidacy) JsonMapper.mapJsonStringToObject(msg.getContent(), Candidacy.class);
 
             if (myAgent.alreadyHasALeader(otherAgentsCandidacy.getGroupId())) {
-                myAgent.addBehaviour(new RejectProposalBehaviour(otherAgentsCandidacy));
+                //myAgent.addBehaviour(new RejectProposalBehaviour(otherAgentsCandidacy));
             } else {
                 if (myAgent.canBecomeLeader(otherAgentsCandidacy.getGroupId())) {
                     if (myScoreIsGreater(myAgent, otherAgentsCandidacy)) {
-                        myAgent.addBehaviour(new RejectProposalBehaviour(otherAgentsCandidacy));
+                        //myAgent.addBehaviour(new RejectProposalBehaviour(otherAgentsCandidacy));
                         myAgent.addBehaviour(new BecomingALeaderBehaviour(otherAgentsCandidacy));
                     } else if (myScoreIsSmaller(myAgent, otherAgentsCandidacy)) {
                         myAgent.addBehaviour(new AcceptProposalBehaviour(otherAgentsCandidacy));
