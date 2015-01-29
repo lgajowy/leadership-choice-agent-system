@@ -32,7 +32,6 @@ public class ReceiveProposalResponseBehaviour extends CyclicBehaviour {
             if (receivedCandidacy != null) {
                 if (mtReject.match(this.msg)) {
                     logger.info("REJECT_PROPOSAL from " + this.msg.getSender().getName());
-                    //myAgent.addBehaviour(new ReceiveProposalBehaviour());
                 } else if (mtAccept.match(this.msg)) {
                     logger.info("ACCEPT_PROPOSAL from " + this.msg.getSender().getName());
                     myAgent.addBehaviour(new BecomingALeaderBehaviour(receivedCandidacy));

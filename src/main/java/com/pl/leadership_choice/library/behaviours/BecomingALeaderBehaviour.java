@@ -29,9 +29,8 @@ public class BecomingALeaderBehaviour extends OneShotBehaviour {
         LeadershipChoiceAgent myAgent = (LeadershipChoiceAgent) this.myAgent;
         leaderCandidacy = myAgent.getCandidacy(newSubordinateCandidacy.getGroupId());
 
-        myAgent.setLeader(leaderCandidacy);
-
-        takeSubordinatesOver();
+        setMeAsLeader();
+        takeOtherAgentsSubordinatesOver();
 
         ACLMessage informMessage = new ACLMessage(ACLMessage.INFORM);
         informMessage.setContent(JsonMapper.createJsonStringFromObject(leaderCandidacy));
@@ -46,7 +45,12 @@ public class BecomingALeaderBehaviour extends OneShotBehaviour {
         myAgent.send(informMessage);
     }
 
-    private void takeSubordinatesOver() {
+    private void setMeAsLeader() {
+        LeadershipChoiceAgent myAgent = (LeadershipChoiceAgent) this.myAgent;
+        myAgent.setLeader(leaderCandidacy);
+    }
+
+    private void takeOtherAgentsSubordinatesOver() {
         logger.info("Taking over subordinates of: " + newSubordinateCandidacy.getPretenderId());
         leaderCandidacy.addNewSubordinates(newSubordinateCandidacy.getPretenderSubordinates());
         leaderCandidacy.addNewSubordinate(newSubordinateCandidacy.getPretenderId());

@@ -23,29 +23,19 @@ public class ReceiveNewLeaderBehaviour extends CyclicBehaviour {
     @Override
     public void action() {
         LeadershipChoiceAgent myAgent = (LeadershipChoiceAgent) this.myAgent;
-
-        //logger.info(this.getClass().getSimpleName() + " START");
-
         message = myAgent.receive(mt);
         if (message == null) {
             block();
         } else {
             Candidacy newLeaderData = (Candidacy) JsonMapper.mapJsonStringToObject(message.getContent(), Candidacy.class);
 
-
-            if(message.getSender().equals(myAgent.getLeader(newLeaderData.getGroupId()))) {
-                //to jest wiadomość od mojego dotychczasowego lidera - przyjmuje wszystko
+            //if (message.getSender().equals(myAgent.getLeader(newLeaderData.getGroupId()))) {
                 myAgent.setLeader(newLeaderData);
                 logger.info("INFORM from "
-                            + message.getSender().getName()
-                            +  " My new leader is "
-                            + myAgent.getLeader(newLeaderData.getGroupId()).getPretenderId());
-
-            } else {
-                //jakis inny kolo sle mi informy - niech spada
-
-                //logger.info("Ignoring INFORM msg. You are not my leader, " + newLeaderData.getPretenderId());
-            }
+                        + message.getSender().getName()
+                        + " My new leader is "
+                        + myAgent.getLeader(newLeaderData.getGroupId()).getPretenderId());
+            //}
         }
     }
 }

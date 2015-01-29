@@ -52,9 +52,9 @@ public class LeadershipChoiceAgent extends Agent {
         readAgentProperties(String.valueOf(getArguments()[0]));
 
         this.addBehaviour(new ReceivingLeaderAgreementsBehaviour());
+        this.addBehaviour(new ReceiveProposalResponseBehaviour());
         this.addBehaviour(new LeaderQueryAnsweringBehaviour());
         this.addBehaviour(new ReceiveProposalBehaviour());
-        this.addBehaviour(new ReceiveProposalResponseBehaviour());
         this.addBehaviour(new ReceiveNewLeaderBehaviour());
         this.addBehaviour(new ReceiveGroupRegistrationRequestBehaviour());
         //doDelete();
